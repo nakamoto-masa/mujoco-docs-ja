@@ -20,6 +20,28 @@ MuJoCoの公式ドキュメント（https://mujoco.readthedocs.io）を日本語
 
 コミットメッセージは [Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/) 形式で日本語で記述する。
 
+## 依存関係の管理
+
+### パッケージの追加
+
+**必ず`uv add`コマンドを使用する。pyproject.tomlに直接書かない。**
+
+```bash
+# 本番依存
+uv add <package>
+
+# 開発依存
+uv add --dev <package>
+```
+
+## コーディングスタイル
+
+### Python
+
+- **フォーマッター**: Ruff
+- **コード変更後は必ず実行**: `uv run ruff format .`
+- **リント**: `uv run ruff check .`
+
 ## ディレクトリ構成
 
 ```
@@ -46,7 +68,8 @@ mujoco-docs-ja/
 │
 ├── translation/       # 翻訳管理
 │   ├── progress.md    # 翻訳進捗管理
-│   └── glossary.md    # 用語集（統一表記）
+│   ├── glossary.md    # 用語集（統一表記）
+│   └── sphinx-config.md  # Sphinx設定とオリジナルとの差分
 │
 └── scripts/           # ユーティリティ
 ```

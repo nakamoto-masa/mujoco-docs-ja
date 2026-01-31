@@ -24,3 +24,8 @@ dependencies = [
     # see https://github.com/aws/aws-sam-cli/issues/3661 regarding markupsafe
     "markupsafe==2.0.1",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.14",
+]
