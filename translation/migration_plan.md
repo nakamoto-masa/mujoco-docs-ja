@@ -72,9 +72,10 @@ overview.rstでビルドテスト実施:
    mkdir -p docs/computation docs/programming
    ```
 
-## 並列実行計画
+## 直列実行計画
 
-残り7ファイルを4グループに分けて、サブエージェントで並列処理。
+残り7ファイルを4グループに分けて、サブエージェントで直列処理。
+（当初は並列実行を計画したが、Claude Codeの制限により直列実行に変更）
 
 ### グループ1: 小規模ファイル（2ファイル）
 
@@ -128,81 +129,52 @@ overview.rstでビルドテスト実施:
 
 ## 実行コマンド
 
-以下の4つのサブエージェントを並列で起動します。
-各プロンプトには「各サブエージェントのタスク」セクションの内容を具体化した指示が含まれています。
+**実行方式**: 以下の4タスクを**直列で**実行（1つずつ順番に実行し、完了を待ってから次へ）
+
+**共通プロンプトテンプレート**:
+```
+以下のファイルを処理してください:
+[ファイルリスト]
+
+各ファイルに対して以下を実施:
+1. ~/repos/HarnessSimulation/docs/mujoco/src/ja/ から該当ファイルをコピー
+2. list-tableを検出（grep -n ".. list-table::"）
+3. オリジナル（original/mujoco/doc/）のグリッドテーブルを参照して変換
+4. 全角文字直後のスペースチェック（grep -En '[^ -~]:\w+:`'）
+
+注意: progress.mdは更新しないでください。
+```
 
 **注意事項**:
-- サンドボックスエラー（`operation not permitted: /tmp/claude-501/cwd-*`）が表示されるが、実際の操作は成功するため無視して良い
-- `progress.md`の更新は各サブエージェントでは行わない（メインエージェントが各グループ完了時に順次更新）
+- サンドボックスエラーは無視して良い
+- progress.mdは各サブエージェントでは更新しない
 
-```python
-# グループ1
-Task(subagent_type="general-purpose",
-     description="小規模ファイル2件を処理",
-     prompt="""
-以下の2ファイルを処理してください:
-1. programming/index.rst（214行）
-2. programming/modeledit.rst（219行）
+---
 
-各ファイルに対して以下を実施:
-1. ~/repos/HarnessSimulation/docs/mujoco/src/ja/ から該当ファイルをコピー
-2. list-tableを検出（grep -n ".. list-table::"）
-3. オリジナル（original/mujoco/doc/）のグリッドテーブルを参照して変換
-4. 全角文字直後のスペースチェック（grep -En '[^ -~]:\w+:`'）
+### タスク1: グループ1 (小規模ファイル2件)
 
-注意: progress.mdは更新しないでください。
-""")
+対象ファイル:
+- programming/index.rst（214行）
+- programming/modeledit.rst（219行）
 
-# グループ2
-Task(subagent_type="general-purpose",
-     description="中規模ファイル2件を処理",
-     prompt="""
-以下の2ファイルを処理してください:
-1. modeling.rst（964行）
-2. python.rst（822行）
+### タスク2: グループ2 (中規模ファイル2件)
 
-各ファイルに対して以下を実施:
-1. ~/repos/HarnessSimulation/docs/mujoco/src/ja/ から該当ファイルをコピー
-2. list-tableを検出（grep -n ".. list-table::"）
-3. オリジナル（original/mujoco/doc/）のグリッドテーブルを参照して変換
-4. 全角文字直後のスペースチェック（grep -En '[^ -~]:\w+:`'）
+対象ファイル:
+- modeling.rst（964行）
+- python.rst（822行）
 
-注意: progress.mdは更新しないでください。
-""")
+### タスク3: グループ3 (大規模ファイル2件)
 
-# グループ3
-Task(subagent_type="general-purpose",
-     description="大規模ファイル2件を処理",
-     prompt="""
-以下の2ファイルを処理してください:
-1. computation/index.rst（1,335行）
-2. programming/simulation.rst（839行）
+対象ファイル:
+- computation/index.rst（1,335行）
+- programming/simulation.rst（839行）
 
-各ファイルに対して以下を実施:
-1. ~/repos/HarnessSimulation/docs/mujoco/src/ja/ から該当ファイルをコピー
-2. list-tableを検出（grep -n ".. list-table::"）
-3. オリジナル（original/mujoco/doc/）のグリッドテーブルを参照して変換
-4. 全角文字直後のスペースチェック（grep -En '[^ -~]:\w+:`'）
+### タスク4: グループ4 (超大規模ファイル1件)
 
-注意: progress.mdは更新しないでください。
-""")
+対象ファイル:
+- XMLreference.rst（7,591行）
 
-# グループ4
-Task(subagent_type="general-purpose",
-     description="超大規模ファイル1件を処理",
-     prompt="""
-以下のファイルを処理してください:
-1. XMLreference.rst（7,591行）
-
-以下を実施:
-1. ~/repos/HarnessSimulation/docs/mujoco/src/ja/ から該当ファイルをコピー
-2. list-tableを検出（grep -n ".. list-table::"）
-3. オリジナル（original/mujoco/doc/）のグリッドテーブルを参照して変換
-4. 全角文字直後のスペースチェック（grep -En '[^ -~]:\w+:`'）
-
-注意: このファイルは大きいため、慎重に処理してください。progress.mdは更新しないでください。
-""")
-```
+注意: このファイルは大きいため、慎重に処理してください。
 
 ## 後続タスク
 
