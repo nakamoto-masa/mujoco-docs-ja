@@ -213,10 +213,10 @@ overview.rstでビルドテスト実施:
 **更新対象** (`translation/progress.md`):
 
 - [x] overview.rst（610行）- 完了
-- [ ] modeling.rst（964行）← グループ2完了時に更新
-- [ ] XMLreference.rst（7,591行）← グループ4完了時に更新
-- [ ] python.rst（822行）← グループ2完了時に更新
-- [ ] computation/index.rst（1,335行）← グループ3完了時に更新
-- [ ] programming/index.rst（214行）← グループ1完了時に更新
-- [ ] programming/modeledit.rst（219行）← グループ1完了時に更新
-- [ ] programming/simulation.rst（839行）← グループ3完了時に更新
+- [x] modeling.rst（964行）← グループ2完了時に更新
+- [x] XMLreference.rst（7,591行）← グループ4完了時に更新
+- [x] python.rst（822行）← グループ2完了時に更新
+- [x] computation/index.rst（1,335行）← グループ3完了時に更新
+- [x] programming/index.rst（214行）← グループ1完了時に更新
+- [x] programming/modeledit.rst（219行）← グループ1完了時に更新
+- [x] programming/simulation.rst（839行）← グループ3完了時に更新

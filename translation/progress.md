@@ -17,11 +17,11 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 | ファイル | 状態 | 備考 |
 |---------|------|------|
 | index.rst | ⚠️ | 基本構造のみ作成 |
-| overview.rst | 🔄 | 610行（HarnessSimulation） |
-| modeling.rst | 🔄 | 964行（HarnessSimulation） |
-| XMLreference.rst | 🔄 | 7,591行（HarnessSimulation） |
+| overview.rst | ✅ | 610行（取り込み完了） |
+| modeling.rst | ✅ | 964行（取り込み完了） |
+| XMLreference.rst | ✅ | 7,591行（取り込み完了） |
 | XMLschema.rst | ❌ | XMLreference.rstにインクルード（単独ビルド対象外） |
-| python.rst | 🔄 | 822行（HarnessSimulation） |
+| python.rst | ✅ | 822行（取り込み完了） |
 | mjx.rst | ❌ | MuJoCo XLA |
 | mjx_api.rst | ❌ | MuJoCo XLA API（目次外） |
 | unity.rst | ❌ | Unity統合 |
@@ -32,18 +32,18 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 
 | ファイル | 状態 | 備考 |
 |---------|------|------|
-| index.rst | 🔄 | HarnessSimulation |
+| index.rst | ✅ | 1,335行（取り込み完了） |
 | fluid.rst | ❌ | 流体シミュレーション |
 
 ### programming/
 
 | ファイル | 状態 | 備考 |
 |---------|------|------|
-| index.rst | 🔄 | 214行（HarnessSimulation） |
-| simulation.rst | 🔄 | 839行（HarnessSimulation） |
+| index.rst | ✅ | 214行（取り込み完了） |
+| simulation.rst | ✅ | 839行（取り込み完了） |
 | visualization.rst | ❌ | 可視化 |
 | ui.rst | ❌ | ユーザーインターフェース |
-| modeledit.rst | 🔄 | 219行（HarnessSimulation） |
+| modeledit.rst | ✅ | 219行（取り込み完了） |
 | samples.rst | ❌ | サンプルコード |
 | extension.rst | ❌ | 拡張機能 |
 
@@ -111,17 +111,17 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 本プロジェクトではSphinx用のreStructuredText形式として、オリジナルの構造に忠実な翻訳に修正する必要がある。
 変更箇所の詳細は `~/repos/HarnessSimulation/docs/CLAUDE.md` を参照。
 
-- [ ] `~/repos/HarnessSimulation/docs/mujoco/src/ja` の翻訳済みファイルを確認
-- [ ] 翻訳ファイルを現プロジェクトのdocs/に移行
-  - [ ] overview.rst（610行）
-  - [ ] modeling.rst（964行）
-  - [ ] XMLreference.rst（7,591行）
-  - [ ] python.rst（822行）
-  - [ ] computation/index.rst（1,335行）
-  - [ ] programming/index.rst（214行）
-  - [ ] programming/modeledit.rst（219行）
-  - [ ] programming/simulation.rst（839行）
-- [ ] 翻訳用語集の統合（glossary.md）
+- [x] `~/repos/HarnessSimulation/docs/mujoco/src/ja` の翻訳済みファイルを確認
+- [x] 翻訳ファイルを現プロジェクトのdocs/に移行
+  - [x] overview.rst（610行）
+  - [x] modeling.rst（964行）
+  - [x] XMLreference.rst（7,591行）
+  - [x] python.rst（822行）
+  - [x] computation/index.rst（1,335行）
+  - [x] programming/index.rst（214行）
+  - [x] programming/modeledit.rst（219行）
+  - [x] programming/simulation.rst（839行）
+- [x] 翻訳用語集の統合（glossary.md）
 - [ ] 移行後のビルドテスト
 
 ### 新規翻訳作業
