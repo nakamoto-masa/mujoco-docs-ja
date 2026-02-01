@@ -35,7 +35,7 @@ MuJoCo 3.2.0以降、 :ref:`mjSpec` 構造体と関連APIを使用してモデ�
 .. _meUsage:
 
 使い方
-~~~~~
+~~~~~~
 
 ここでは、プロシージャル・モデル編集のためのC APIについて説明しますが、これは :ref:`Python bindings<PyModelEdit>` でも公開されています。上級ユーザーは、 `user_api_test.cc
 <https://github.com/google-deepmind/mujoco/blob/main/test/user/user_api_test.cc>`__ と
@@ -116,7 +116,7 @@ MJCFに対応するモデル要素は、 ``mjs`` プレフィックスを持つC
 .. _meAttachment:
 
 アタッチメント
-^^^^^^^^^^
+^^^^^^^^^^^^^^
 
 このフレームワークは、強力な新機能であるモデルサブツリーのアタッチと削除を導入します。この機能は、すでにMJCFの
 :ref:`attach<body-attach>` と :ref:`replicate<replicate>` メタ要素を駆動するために使用されています。
@@ -176,7 +176,7 @@ XMLを解析する際に一時的にtrueに設定されます。 :ref:`ボディ
 .. _meDefault:
 
 デフォルトクラス
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
 デフォルトクラスは新しいAPIで完全にサポートされていますが、それらを使用するにはデフォルトの
 実装方法を理解する必要があります。 :ref:`Default settings <CDefault>` セクションで説明されているように、
 デフォルトクラスは最初にダミー要素のツリーとしてロードされ、それらを参照する要素を初期化するために使用されます。
@@ -212,7 +212,7 @@ Specは、 :ref:`mj_saveXML` または :ref:`mj_saveXMLString` を使用してXM
 .. _meRecompilation:
 
 インプレース再コンパイル
-^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 :ref:`mj_compile` によるコンパイルは、いつでも呼び出して新しいmjModelインスタンスを取得できます。対照的に、
 :ref:`mj_recompile` は既存のmjModelとmjDataペアをインプレースで更新し、シミュレーション状態を保持します。これにより、
