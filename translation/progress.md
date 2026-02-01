@@ -105,25 +105,6 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 
 ## 次のアクション
 
-### 既存翻訳の取り込み（最優先）
-
-**注意**: HarnessSimulationの翻訳済みファイルはpandocでの変換用に構造を変更している部分がある。
-本プロジェクトではSphinx用のreStructuredText形式として、オリジナルの構造に忠実な翻訳に修正する必要がある。
-変更箇所の詳細は `~/repos/HarnessSimulation/docs/CLAUDE.md` を参照。
-
-- [x] `~/repos/HarnessSimulation/docs/mujoco/src/ja` の翻訳済みファイルを確認
-- [x] 翻訳ファイルを現プロジェクトのdocs/に移行
-  - [x] overview.rst（610行）
-  - [x] modeling.rst（964行）
-  - [x] XMLreference.rst（7,591行）
-  - [x] python.rst（822行）
-  - [x] computation/index.rst（1,335行）
-  - [x] programming/index.rst（214行）
-  - [x] programming/modeledit.rst（219行）
-  - [x] programming/simulation.rst（839行）
-- [x] 翻訳用語集の統合（glossary.md）
-- [ ] 移行後のビルドテスト
-
 ### 新規翻訳作業
 
 - [ ] オリジナルのドキュメント構造を詳細に調査
