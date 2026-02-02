@@ -108,23 +108,92 @@ uv run sphinx-build . _build/html
 open _build/html/index.html
 ```
 
+## 翻訳ルール
+
+以下のルールに従って翻訳を行う。
+
+### 基本方針
+
+- RST構文（ディレクティブ、ラベル、コードブロック等）はそのまま維持する
+- コード例（C、XML）は翻訳しない。コード内コメントのみ日本語化する
+- 技術用語（MuJoCo、MJCF、mjModel、mjData等）は英語のまま残す
+- URL・リンク先はそのまま維持する
+- セクションタイトルは日本語に翻訳する
+- 翻訳時は必ず `translation/glossary.md` の用語集を参照し、訳語を統一すること
+- 訳語が複数考えられる用語が出た場合は、翻訳後に用語集へ追記すること
+
+### インラインマークアップの注意点
+
+SphinxのRSTパーサーでは、以下の点に注意すること。
+
+**1. 全角文字の直後にスペースを入れる**
+
+SphinxはASCII空白・句読点のみをマークアップの区切りとして認識する。全角文字（全角句読点、日本語文字等）の直後にバッククォートがあるとマークアップが無視される。
+
+```rst
+# NG
+読み込めます。`MeshLab <https://example.com>`__
+
+# OK
+読み込めます。 `MeshLab <https://example.com>`__
+```
+
+**2. Sphinx記法も同様**
+
+`:ref:`, `:doc:`, `:el:`, `:at:` などのSphinx記法も、全角文字の直後だとマークアップとして認識されない。
+
+```rst
+# NG
+関数は:ref:`mjModel`を返します。
+
+# OK
+関数は :ref:`mjModel` を返します。
+```
+
 ## 翻訳ワークフロー
 
 ### 1. オリジナルを参照
 
-```bash
-# オリジナルドキュメント
-original/mujoco/doc/overview.rst
+翻訳するオリジナルファイルを確認する
 
-# 翻訳先
-docs/overview.rst
-```
+- オリジナル: `original/mujoco/doc/overview.rst`
+- 翻訳先: `docs/overview.rst`
 
-### 2. 用語の統一
+### 2. 用語の統一を確認
 
 `translation/glossary.md` を参照して、技術用語の統一表記を確認
 
-### 3. 進捗管理
+### 3. 翻訳作業
+
+翻訳先ファイルを作成または編集し、上記の「翻訳ルール」に従って翻訳を実施する
+
+### 4. 翻訳後のチェック
+
+翻訳完了後、以下のコマンドで全角文字直後のマークアップをチェックする。
+
+**検出パターン:** `[^ -~]` = ASCII以外の文字（全角文字：ひらがな、カタカナ、漢字、全角句読点・括弧など）
+
+```bash
+# バッククォート（`...`, ``...``）のチェック
+grep -En '[^ -~]`[^`]+`' docs/<filename>.rst    # シングル
+grep -En '[^ -~]``[^`]+``' docs/<filename>.rst  # ダブル
+
+# Sphinxロール（:ref:, :doc: など）のチェック
+grep -En '[^ -~]:\w+:`' docs/<filename>.rst
+```
+
+該当箇所が見つかった場合、全角文字の直後にスペースを挿入する。
+
+### 5. ビルドして確認
+
+```bash
+cd docs && uv run sphinx-build . _build/html
+open _build/html/index.html
+```
+
+ビルドエラーがないか確認し、レンダリングが正しいかブラウザで確認する。
+
+### 6. 進捗管理を更新
 
 `translation/progress.md` で翻訳状態を更新
 
