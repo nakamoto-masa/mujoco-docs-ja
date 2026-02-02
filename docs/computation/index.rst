@@ -1095,6 +1095,7 @@ libccdパイプライン（レガシー）
        | :ref:`sdf_initpoints <option-sdf_initpoints>`
 
 .. _Sleeping:
+
 スリーピングアイランド
 ----------------------
 

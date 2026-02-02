@@ -25,7 +25,7 @@ MuJoCoは多数の型を定義しています：
     - :ref:`mjOption` (:ref:`mjModel` に埋め込まれている)
     - :ref:`mjData`
 
-  - :ref:`補助構造体型<tyAuxStructure>`（エンジンでも使用される）
+  - :ref:`補助構造体型<tyAuxStructure>` （エンジンでも使用される）
   - :ref:`シミュレーション統計<tyStatStructure>` を収集するための構造体
   - :ref:`抽象可視化<tyVisStructure>` のための構造体
   - :ref:`OpenGLレンダラー<tyRenderStructure>` で使用される構造体

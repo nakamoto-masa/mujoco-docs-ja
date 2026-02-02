@@ -790,7 +790,7 @@ USD Export API
 msh2obj.py
 ----------
 
-`msh2obj.py <https://github.com/google-deepmind/mujoco/blob/main/python/mujoco/msh2obj.py>`__ スクリプトは、表面メッシュ用の :ref:`レガシー.mshフォーマット<legacy-msh-docs>`（.mshを使用する体積メッシュの可能性がある :ref:`gmshフォーマット<gmsh-file-docs>` とは異なります）をOBJファイルに変換します。レガシーフォーマットは非推奨であり、将来のリリースで削除されます。すべてのレガシーファイルをOBJに変換してください。
+`msh2obj.py <https://github.com/google-deepmind/mujoco/blob/main/python/mujoco/msh2obj.py>`__ スクリプトは、表面メッシュ用の :ref:`レガシー.mshフォーマット<legacy-msh-docs>` （.mshを使用する体積メッシュの可能性がある :ref:`gmshフォーマット<gmsh-file-docs>` とは異なります）をOBJファイルに変換します。レガシーフォーマットは非推奨であり、将来のリリースで削除されます。すべてのレガシーファイルをOBJに変換してください。
 
 
 
