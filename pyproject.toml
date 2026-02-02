@@ -23,6 +23,7 @@ dependencies = [
     "wheel==0.45.1",
     # see https://github.com/aws/aws-sam-cli/issues/3661 regarding markupsafe
     "markupsafe==2.0.1",
+    "mujoco-mjx>=3.4.0",
 ]
 
 [dependency-groups]

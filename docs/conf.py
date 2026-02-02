@@ -23,8 +23,10 @@ master_doc = "index"
 
 # Sphinx拡張
 extensions = [
-    "sphinx.ext.extlinks",
+    "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.extlinks",
     "sphinxcontrib.bibtex",
     "sphinxcontrib.katex",
     "sphinxcontrib.youtube",
