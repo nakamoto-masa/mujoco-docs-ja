@@ -56,7 +56,7 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 | APIfunctions.rst | 67 | ❌ | 関数リファレンス |
 | APIglobals.rst | 628 | ❌ | グローバル変数 |
 | functions.rst | 5,304 | 🈚 | ヘッダーから自動生成 |
-| functions_override.rst | 755 | ❌ | インクルード用（単独ビルド対象外） |
+| functions_override.rst | 755 | 🈚 | 自動生成の入力ファイル（翻訳版では未使用） |
 
 ### mjwarp/
 
