@@ -51,10 +51,10 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 
 | ファイル | 行数 | 状態 | 備考 |
 |---------|------------|------|------|
-| index.rst | 20 | ❌ | |
-| APItypes.rst | 1,845 | ❌ | 型定義 |
-| APIfunctions.rst | 67 | ❌ | 関数リファレンス |
-| APIglobals.rst | 628 | ❌ | グローバル変数 |
+| index.rst | 20 | ✅ | APIリファレンス概要 |
+| APItypes.rst | 1,845 | ✅ | 型定義 |
+| APIfunctions.rst | 67 | ✅ | 関数リファレンス |
+| APIglobals.rst | 628 | ✅ | グローバル変数 |
 | functions.rst | 5,304 | 🈚 | ヘッダーから自動生成 |
 | functions_override.rst | 755 | 🈚 | 自動生成の入力ファイル（翻訳版では未使用） |
 

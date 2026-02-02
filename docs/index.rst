@@ -12,6 +12,7 @@
    modeling
    XMLreference
    programming/index.rst
+   APIreference/index.rst
    python
    MuJoCo XLA <mjx>
    unity
