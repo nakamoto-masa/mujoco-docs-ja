@@ -69,12 +69,12 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 
 | ファイル | 行数 | 状態 | 備考 |
 |---------|------------|------|------|
-| index.rst | 63 | ❌ | OpenUSD統合概要 |
-| building.rst | 63 | ❌ | ビルド方法 |
-| mjcPhysics.rst | 107 | ❌ | mjcPhysicsスキーマ |
-| mjcf_file_format_plugin.rst | 87 | ❌ | MJCFファイル形式プラグイン |
-| importing.rst | 29 | ❌ | インポート |
-| exporting.rst | 26 | ❌ | エクスポート |
+| index.rst | 63 | ✅ | OpenUSD統合概要 |
+| building.rst | 63 | ✅ | ビルド方法 |
+| mjcPhysics.rst | 107 | ✅ | mjcPhysicsスキーマ |
+| mjcf_file_format_plugin.rst | 87 | ✅ | MJCFファイル形式プラグイン |
+| importing.rst | 29 | ✅ | インポート |
+| exporting.rst | 26 | ✅ | エクスポート |
 
 ## 優先順位
 

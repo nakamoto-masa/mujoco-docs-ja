@@ -16,6 +16,7 @@
    python
    MuJoCo XLA <mjx>
    MuJoCo Warp <mjwarp/index>
+   OpenUSD <OpenUSD/index>
    unity
    models
 
