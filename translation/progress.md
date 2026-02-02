@@ -33,7 +33,7 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 | ファイル | 行数 | 状態 | 備考 |
 |---------|------------|------|------|
 | index.rst | 2,058 | ✅ | HarnessSimulationから取り込み |
-| fluid.rst | 595 | ❌ | 流体シミュレーション |
+| fluid.rst | 595 | ✅ | 流体シミュレーション |
 
 ### programming/
 
@@ -41,11 +41,11 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 |---------|------------|------|------|
 | index.rst | 295 | ✅ | HarnessSimulationから取り込み |
 | simulation.rst | 1,331 | ✅ | HarnessSimulationから取り込み |
-| visualization.rst | 479 | ❌ | 可視化 |
-| ui.rst | 105 | ❌ | ユーザーインターフェース |
+| visualization.rst | 479 | ✅ | 可視化 |
+| ui.rst | 105 | ✅ | ユーザーインターフェース |
 | modeledit.rst | 223 | ✅ | HarnessSimulationから取り込み |
-| samples.rst | 223 | ❌ | サンプルコード |
-| extension.rst | 468 | ❌ | 拡張機能 |
+| samples.rst | 223 | ✅ | サンプルコード |
+| extension.rst | 468 | ✅ | 拡張機能 |
 
 ### APIreference/
 
