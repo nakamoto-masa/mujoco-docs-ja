@@ -184,16 +184,29 @@ grep -En '[^ -~]:\w+:`' docs/<filename>.rst
 
 該当箇所が見つかった場合、全角文字の直後にスペースを挿入する。
 
-### 5. ビルドして確認
+### 5. ビルド
+
+通常ビルド:
 
 ```bash
 cd docs && uv run sphinx-build . _build/html
-open _build/html/index.html
 ```
+
+toctreeを変更した場合（キャッシュクリア）:
+
+```bash
+cd docs && uv run sphinx-build -E . _build/html
+```
+
+### 6. 確認
 
 ビルドエラーがないか確認し、レンダリングが正しいかブラウザで確認する。
 
-### 6. 進捗管理を更新
+```bash
+open _build/html/index.html
+```
+
+### 7. 進捗管理を更新
 
 `translation/progress.md` で翻訳状態を更新
 
