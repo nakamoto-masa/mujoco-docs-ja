@@ -22,10 +22,10 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 | XMLreference.rst | 9,364 | ✅ | HarnessSimulationから取り込み |
 | XMLschema.rst | 5,380 | 🈚 | XMLreference.rstにインクルード（単独ビルド対象外） |
 | python.rst | 1,106 | ✅ | HarnessSimulationから取り込み |
-| mjx.rst | 411 | ❌ | MuJoCo XLA |
-| mjx_api.rst | 44 | ❌ | MuJoCo XLA API（目次外） |
-| unity.rst | 352 | ❌ | Unity統合 |
-| models.rst | 153 | ❌ | サンプルモデル |
+| mjx.rst | 411 | ✅ | MuJoCo XLA |
+| mjx_api.rst | 44 | 🈚 | Pythonモジュールから自動生成 |
+| unity.rst | 352 | ✅ | Unity統合 |
+| models.rst | 153 | ✅ | サンプルモデル |
 | changelog.rst | 2,598 | ❌ | 定期的な更新が必要 |
 
 ### computation/

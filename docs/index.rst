@@ -1,24 +1,22 @@
-MuJoCo ドキュメント 日本語版
-===============================
-
-MuJoCo（Multi-Joint dynamics with Contact）の公式ドキュメントの日本語訳です。
-
-.. note::
-   このドキュメントは翻訳作業中です。
+..
+   このファイルは index.html としては使用されず、toctree の定義のみに使われます。
+   これは、toctree が定義されているページ自身への参照を含むことができないためです
+   (https://github.com/sphinx-doc/sphinx/issues/4602)。
+   conf.py の `redirects` 設定により、このページは overview.html にリダイレクトされます。
 
 .. toctree::
    :hidden:
-   :maxdepth: 2
 
-はじめに
---------
+   overview
+   computation/index.rst
+   modeling
+   XMLreference
+   programming/index.rst
+   python
+   MuJoCo XLA <mjx>
+   unity
+   models
 
-MuJoCoは、ロボティクス、バイオメカニクス、グラフィックス、アニメーション、
-その他多くの分野で必要とされる高速で正確な物理シミュレーションエンジンです。
 
-リソース
---------
-
-- `オリジナルドキュメント <https://mujoco.readthedocs.io>`_
-- `GitHubリポジトリ <https://github.com/google-deepmind/mujoco>`_
-- `日本語翻訳リポジトリ <https://github.com/nakamoto-masa/mujoco-docs-ja>`_
+.. sidebar-links::
+   :github:
