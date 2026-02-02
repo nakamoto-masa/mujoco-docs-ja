@@ -15,6 +15,7 @@
    APIreference/index.rst
    python
    MuJoCo XLA <mjx>
+   MuJoCo Warp <mjwarp/index>
    unity
    models
 
