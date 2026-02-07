@@ -16,7 +16,7 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 
 | ファイル | 行数 | 状態 | 備考 |
 |---------|------------|------|------|
-| index.rst | 26 | ⚠️ | 基本構造のみ作成 |
+| index.rst | 26 | ✅ | toctree定義（ユーザー向け表示なし） |
 | overview.rst | 1,002 | ✅ | HarnessSimulationから取り込み |
 | modeling.rst | 1,723 | ✅ | HarnessSimulationから取り込み |
 | XMLreference.rst | 9,364 | ✅ | HarnessSimulationから取り込み |
@@ -26,7 +26,7 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 | mjx_api.rst | 44 | 🈚 | Sphinx automodule設定ファイル |
 | unity.rst | 352 | ✅ | Unity統合 |
 | models.rst | 153 | ✅ | サンプルモデル |
-| changelog.rst | 2,598 | ❌ | 定期的な更新が必要 |
+| changelog.rst | 2,598 | ✅ | 変更履歴（v2.1.0〜次期バージョン） |
 
 ### computation/
 
@@ -115,6 +115,6 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 ### 新規翻訳作業
 
 - [x] オリジナルのドキュメント構造を詳細に調査
-- [ ] 未翻訳ファイルの翻訳開始
+- [x] 未翻訳ファイルの翻訳開始
 - [x] ビルドスクリプトの整備
 - [ ] CI/CDの設定

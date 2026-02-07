@@ -19,6 +19,7 @@
    OpenUSD <OpenUSD/index>
    unity
    models
+   changelog
 
 
 .. sidebar-links::
