@@ -4,11 +4,13 @@
 import os
 import sys
 
-from sphinxcontrib import katex
-
 # -- パス設定 ----------------------------------------------------------------
 
+# カスタムSphinx拡張（mujoco_includeなど）のパス
 sys.path.append(os.path.abspath("ext"))
+
+from sphinxcontrib import katex
+from sphinxcontrib import youtube
 
 # -- プロジェクト情報 ---------------------------------------------------------
 
@@ -54,6 +56,36 @@ extlinks = {
 
 # MuJoCo Warp ドキュメント用設定
 napoleon_google_docstring = True
+autodoc_class_signature = "separated"
+add_module_names = False
+toc_object_entries_show_parents = "hide"
+default_role = "literal"
+
+
+# RST形式の問題があるdocstringからの警告を抑制
+def setup(app):
+    import logging
+
+    class SphinxWarningFilter(logging.Filter):
+        def filter(self, record):
+            msg = record.getMessage()
+            # e.g. qpos0: qpos values at default pose (*, nq)
+            if "Inline emphasis start-string" in msg:
+                return False
+            # e.g. see `name` for details
+            if "Inline interpreted text" in msg:
+                return False
+            # e.g. multi-line definition without trailing blank line
+            if "Definition list ends without a blank line" in msg:
+                return False
+            # e.g. mjsactuator_ reference in C++ docstrings
+            if "Unknown target name" in msg:
+                return False
+            return True
+
+    for handler in logging.getLogger("sphinx").handlers:
+        handler.addFilter(SphinxWarningFilter())
+
 
 # GitHub関連設定
 github_username = "google-deepmind"
@@ -91,6 +123,14 @@ rst_prolog = """
 .. include:: /includes/roles.rst
 .. include:: <isonum.txt>
 """
+
+# -- autodoc設定 --------------------------------------------------------------
+
+autodoc_default_options = {
+    "member-order": "bysource",
+    "special-members": True,
+    "exclude-members": "__repr__, __str__, __weakref__",
+}
 
 # -- HTML出力オプション -------------------------------------------------------
 
