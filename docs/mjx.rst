@@ -25,7 +25,7 @@ MJXはGoogleの `Brax <https://github.com/google/brax>`__ 物理・強化学習�
 以下のIPythonノートブックは、MJXを強化学習と組み合わせて使用し、ヒューマノイドおよび四足ロボットの歩行を訓練する方法を示します： |colab| 。
 
 .. |colab| image:: https://colab.research.google.com/assets/colab-badge.png
-           :target: https://colab.research.google.com/github/google-deepmind/mujoco/blob/main/mjx/tutorial.ipynb
+           :target: https://colab.research.google.com/github/nakamoto-masa/mujoco-docs-ja/blob/main/docs/mjx/tutorial.ipynb
 
 .. _MjxInstallation:
 
