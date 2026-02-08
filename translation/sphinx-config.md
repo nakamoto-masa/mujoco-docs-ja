@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.abspath('../'))
 sys.path.insert(0, os.path.abspath('../mjx/mujoco/mjx/third_party'))
 ```
 
-これにより `mujoco_warp` のimportが失敗し、ビルド時に警告が出る。
+`mujoco_warp` のAPIページ（`docs/mjwarp/api.rst`）は `automodule` の代わりに翻訳準備中のプレースホルダーを表示している。
 詳細は [research/mujoco_warp_autodoc.md](research/mujoco_warp_autodoc.md) を参照。
 
 ### 2. language（追加）
