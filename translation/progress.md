@@ -22,14 +22,14 @@ MuJoCo日本語ドキュメントの翻訳進捗状況を管理します。
 | XMLreference.rst | 9,364 | ✅ | HarnessSimulationから取り込み |
 | XMLschema.rst | 5,380 | 🈚 | XMLreference.rstにインクルード（単独ビルド対象外） |
 | python.rst | 1,106 | ✅ | HarnessSimulationから取り込み |
-| ├─ python/tutorial.ipynb | 1,015 | ✅ | Pythonチュートリアル |
-| ├─ python/LQR.ipynb | 533 | ❌ | LQRコントローラー例 |
-| ├─ python/least_squares.ipynb | 1,229 | ❌ | 最小二乗法例 |
-| ├─ python/mjspec.ipynb | 990 | ❌ | モデル編集例 |
-| └─ python/rollout.ipynb | 408 | ❌ | ロールアウト例 |
+| ├─ python/tutorial.ipynb | 2,245 | ✅ | Pythonチュートリアル |
+| ├─ python/LQR.ipynb | 952 | ✅ | LQRコントローラー例 |
+| ├─ python/least_squares.ipynb | 2,336 | ✅ | 最小二乗法例 |
+| ├─ python/mjspec.ipynb | 2,644 | ✅ | モデル編集例 |
+| └─ python/rollout.ipynb | 1,744 | ✅ | ロールアウト例 |
 | mjx.rst | 411 | ✅ | MuJoCo XLA |
-| ├─ mjx/tutorial.ipynb | 690 | ❌ | MJXチュートリアル |
-| └─ mjx/training_apg.ipynb | 688 | ❌ | 微分可能物理チュートリアル |
+| ├─ mjx/tutorial.ipynb | 1,643 | ❌ | MJXチュートリアル |
+| └─ mjx/training_apg.ipynb | 1,566 | ❌ | 微分可能物理チュートリアル |
 | mjx_api.rst | 44 | 🈚 | Sphinx automodule設定ファイル |
 | unity.rst | 352 | ✅ | Unity統合 |
 | models.rst | 153 | ✅ | サンプルモデル |

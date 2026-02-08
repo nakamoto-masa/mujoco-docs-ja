@@ -18,7 +18,7 @@ mujoco-pyユーザー向けに、以下に :ref:`マイグレーションノー�
 Pythonバインディングを使用したMuJoCoチュートリアルがこちらで利用可能です： |mjcolab|
 
 .. |mjcolab| image:: https://colab.research.google.com/assets/colab-badge.png
-             :target: https://colab.research.google.com/github/google-deepmind/mujoco/blob/main/python/tutorial.ipynb
+             :target: https://colab.research.google.com/github/nakamoto-masa/mujoco-docs-ja/blob/main/docs/python/tutorial.ipynb
 
 .. _PyInstallation:
 
@@ -346,7 +346,7 @@ MuJoCoは、ユーザーが計算パイプラインの特定部分を変更す�
 
 モデル編集
 ==========
-モデル編集のためのC APIは :doc:`Programming<../programming/modeledit>` の章で文書化されています。この機能はPython APIに反映されており、いくつかの便利なメソッドが追加されています。以下は最小限の使用例です。より多くの例はModel Editing `colabノートブック <https://colab.research.google.com/github/google-deepmind/mujoco/blob/main/python/mjspec.ipynb>`__ で見つけることができます。
+モデル編集のためのC APIは :doc:`Programming<../programming/modeledit>` の章で文書化されています。この機能はPython APIに反映されており、いくつかの便利なメソッドが追加されています。以下は最小限の使用例です。より多くの例はModel Editing `colabノートブック <https://colab.research.google.com/github/nakamoto-masa/mujoco-docs-ja/blob/main/docs/python/mjspec.ipynb>`__ で見つけることができます。
 
 
 .. code-block:: python
@@ -505,7 +505,7 @@ spec内のすべての要素のリストは、複数形を使用した名前付�
 
 `dm_control <https://github.com/google-deepmind/dm_control/tree/main>`__ の `PyMJCF <https://github.com/google-deepmind/dm_control/blob/main/dm_control/mjcf/README.md>`__ モジュールは、ここで説明したネイティブモデル編集APIと同様の機能を提供しますが、文字列のPython操作に依存しているため、約2桁遅くなります。
 
-``PyMJCF`` に慣れているユーザーのために、 ``MjSpec`` オブジェクトは概念的に ``dm_control`` の ``mjcf_model`` に似ています。より詳細なマイグレーションガイドは将来ここに追加される可能性があります。その間、Model Editing `colabノートブック <https://colab.research.google.com/github/google-deepmind/mujoco/blob/main/python/mjspec.ipynb>`__ には、 ``dm_control`` `チュートリアルノートブック <https://github.com/google-deepmind/dm_control/blob/main/dm_control/mjcf/tutorial.ipynb>`__ の ``PyMJCF`` 例の再実装が含まれています。
+``PyMJCF`` に慣れているユーザーのために、 ``MjSpec`` オブジェクトは概念的に ``dm_control`` の ``mjcf_model`` に似ています。より詳細なマイグレーションガイドは将来ここに追加される可能性があります。その間、Model Editing `colabノートブック <https://colab.research.google.com/github/nakamoto-masa/mujoco-docs-ja/blob/main/docs/python/mjspec.ipynb>`__ には、 ``dm_control`` `チュートリアルノートブック <https://github.com/google-deepmind/dm_control/blob/main/dm_control/mjcf/tutorial.ipynb>`__ の ``PyMJCF`` 例の再実装が含まれています。
 
 ``PyMJCF`` は「バインディング」の概念を提供し、ヘルパークラスを介して :ref:`mjModel` と :ref:`mjData` の値へのアクセスを提供します。ネイティブAPIでは、ヘルパークラスは必要ないため、 ``mjs`` オブジェクトを :ref:`mjModel` と :ref:`mjData` に直接バインドすることができます。例えば、名前に"torso"という文字列を含む複数のジオムがあるとします。 ``mjData`` からXY平面でのデカルト座標位置を取得したいとします。これは次のように行えます：
 
@@ -593,7 +593,7 @@ rollout
 ``mujoco.rollout`` と ``mujoco.rollout.Rollout`` は、pybind11を介してPythonモジュールとして公開される追加のC/C++機能を追加する方法を示しています。これは `rollout.cc <https://github.com/google-deepmind/mujoco/blob/main/python/mujoco/rollout.cc>`__ に実装され、 `rollout.py <https://github.com/google-deepmind/mujoco/blob/main/python/mujoco/rollout.py>`__ でラップされています。このモジュールは、Python外で実装された緊密なループが有益な一般的なユースケースに対応しています：初期状態と制御のシーケンスを与えて軌跡をロールアウトし（つまり、ループ内で :ref:`mj_step` を呼び出し）、後続の状態とセンサー値を返します。複数のMjDataインスタンス（スレッドごとに1つ）が引数として渡された場合、ロールアウトは内部的に管理されたスレッドプールで並列に実行されます。このノートブックは、 ``rollout`` |rollout_colab| の使用方法と、いくつかのベンチマーク（例：以下の図）を示しています。
 
 .. |rollout_colab| image:: https://colab.research.google.com/assets/colab-badge.png
-                   :target: https://colab.research.google.com/github/google-deepmind/mujoco/blob/main/python/rollout.ipynb
+                   :target: https://colab.research.google.com/github/nakamoto-masa/mujoco-docs-ja/blob/main/docs/python/rollout.ipynb
 
 .. image:: images/python/rollout.png
    :align: right
@@ -652,7 +652,7 @@ minimize
 ``minimize.least_squares()`` 関数は、 :ref:`mju_boxQP` で逐次2次計画問題を解く非線形最小二乗最適化器を実装しています。これは関連ノートブックに文書化されています： |lscolab|
 
 .. |lscolab| image:: https://colab.research.google.com/assets/colab-badge.png
-             :target: https://colab.research.google.com/github/google-deepmind/mujoco/blob/main/python/least_squares.ipynb
+             :target: https://colab.research.google.com/github/nakamoto-masa/mujoco-docs-ja/blob/main/docs/python/least_squares.ipynb
 
 .. _PyUSDexport:
 
