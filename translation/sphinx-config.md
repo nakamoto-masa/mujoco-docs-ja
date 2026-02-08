@@ -4,75 +4,56 @@
 
 ## 設計方針
 
-### 基本方針
-
-1. **段階的な構築**: 翻訳の進行に合わせて必要な機能を追加
-2. **オリジナルの踏襲**: 見た目（Furoテーマ、配色）は維持
-3. **日本語対応**: `language = 'ja'` を設定
-4. **ビルドツール統一**: uvを使用（`uv run sphinx-build`）
-5. **依存関係の最小化**: 必要な拡張のみを含める
+1. **オリジナルの踏襲**: 拡張・テーマ・配色はすべてオリジナルと同一にする
+2. **差分の最小化**: 翻訳に必要な変更のみ加える
+3. **ビルドツール統一**: uvを使用（`uv run sphinx-build`）
 
 ## オリジナルとの差分
 
-### 1. conf.py
+現在の差分は以下の4点のみ。それ以外の設定（拡張、テーマ、配色、rst_prolog、CSS/JS等）はすべてオリジナルと同一。
 
-#### 日本語設定
+### 1. sys.path（削除）
 
-```python
-language = "ja"
-html_title = "MuJoCo ドキュメント 日本語版"
-```
-
-#### 使用中のSphinx拡張
+オリジナルではPython API自動生成用のパスを追加しているが、翻訳版では不要なため削除。
 
 ```python
-extensions = [
-    "sphinx.ext.extlinks",  # GitHubリンク（issue/PR）
-    "sphinx_copybutton",  # コードブロックコピーボタン
-    "sphinx_design",  # デザインコンポーネント
-]
+# オリジナルのみ（翻訳版では削除）
+sys.path.insert(0, os.path.abspath('../'))
+sys.path.insert(0, os.path.abspath('../mjx/mujoco/mjx/third_party'))
 ```
 
-**オリジナルから除外している拡張:**
-- Python API自動生成関連: `autodoc`, `napoleon`, `viewcode`
-- 高度な機能: `katex`, `bibtex`, `youtube`, `favicon`, `sphinx_toolbox.*`
-- カスタム拡張: `mujoco_include`
+これにより `mujoco_warp` のimportが失敗し、ビルド時に警告が出る。
+詳細は [research/mujoco_warp_autodoc.md](research/mujoco_warp_autodoc.md) を参照。
 
-#### その他の主な設定
+### 2. language（追加）
 
 ```python
-# テーマ
-html_theme = "furo"
-html_theme_options = {...}  # オリジナルと同じ配色
-
-# RSTプロローグ（簡略版）
-rst_prolog = """
-.. include:: <isonum.txt>
-"""
-
-# GitHubリンク用
-extlinks = {
-    "issue": ("https://github.com/google-deepmind/mujoco/issues/%s", "issue #%s"),
-    "pr": ("https://github.com/google-deepmind/mujoco/pull/%s", "PR #%s"),
-}
+language = 'ja'
 ```
 
-**オリジナルから除外している設定:**
-- `sys.path`の追加（Python API生成用パス）
-- `redirects`辞書（ページリダイレクト）
-- `html_css_files`/`html_js_files`（カスタムCSS/JS）
-- `setup()`関数（Sphinx警告フィルター）
+### 3. html_title（変更）
 
-### 2. docutils.conf
+```python
+# オリジナル
+html_title = 'MuJoCo Documentation'
 
-オリジナルと同じ設定を使用：
-
-```
-[html writers]
-table-style: colwidths-grid
+# 翻訳版
+html_title = 'MuJoCo ドキュメント 日本語版'
 ```
 
-### 3. Makefile
+### 4. GitHub設定（変更）
+
+```python
+# オリジナル
+github_username = 'google-deepmind'
+github_repository = 'mujoco'
+
+# 翻訳版
+github_username = 'nakamoto-masa'
+github_repository = 'mujoco-docs-ja'
+```
+
+## Makefile
 
 ビルドツールをuvに統一：
 
@@ -82,22 +63,10 @@ SPHINXBUILD = uv run sphinx-build
 
 ## メンテナンス
 
-### 拡張機能を追加する場合
-
-1. `pyproject.toml`に依存関係を追加（必要な場合）
-2. `docs/conf.py`の`extensions`に追加
-3. 拡張固有の設定を追加
-4. このファイルの「使用中のSphinx拡張」セクションを更新
-5. ビルドテスト: `cd docs && uv run sphinx-build . _build/html`
-
 ### オリジナルとの差分確認
 
 ```bash
-# conf.pyの差分
 diff original/mujoco/doc/conf.py docs/conf.py
-
-# オリジナルの設定を参照
-cat original/mujoco/doc/conf.py
 ```
 
 **注意**: このファイルは「現在の状態」を記録します。変更履歴はgitコミットログで確認してください。
