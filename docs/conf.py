@@ -88,8 +88,8 @@ def setup(app):
 
 
 # GitHub関連設定
-github_username = "google-deepmind"
-github_repository = "mujoco"
+github_username = "nakamoto-masa"
+github_repository = "mujoco-docs-ja"
 
 # Bibtex参考文献設定
 bibtex_bibfiles = ["references.bib"]
