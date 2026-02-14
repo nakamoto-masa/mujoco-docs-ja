@@ -245,6 +245,16 @@ git diff <現在のコミット>..<新バージョンタグ> -- doc/<filename>.r
 
 `translation/progress.md` で対応状況を更新。
 
+### 6. リリース前チェック
+
+翻訳の差分反映が完了したら、以下を確認してからタグを打つ。
+
+- `README.md` のバージョン情報・基準コミットを更新
+- `pyproject.toml` の `mujoco-mjx` バージョンがサブモジュールと一致
+- `translation/progress.md` のタスクがすべて完了
+- RTDビルドが成功し、ページ表示に問題がない
+- annotatedタグを打ってpush（`git tag -a <version> -m "<message>"`）
+
 ## Jupyter Notebookの翻訳
 
 ### 翻訳対象

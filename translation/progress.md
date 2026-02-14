@@ -1,6 +1,6 @@
 # バージョン対応状況
 
-最新対応バージョン: 3.5.0（作業中）
+最新対応バージョン: 3.5.0
 前回バージョン: 3.4.1-dev（初版）
 
 ## 凡例
@@ -86,12 +86,15 @@
 
 - [x] 現在の状態に `3.4.1-dev` annotatedタグを打つ
 - [x] サブモジュールを 3.5.0 に更新
+- [x] `pyproject.toml` の `mujoco-mjx` バージョンを更新
 - [x] 翻訳ファイルの差分反映（上記 ⚠️ のファイル）
-- [x] `mjwarp/api.rst` の翻訳対応（`research/mujoco_warp_autodoc.md` 参照）
-- [ ] ビルド確認
-- [ ] `3.5.0` annotatedタグを打つ
-- [ ] Read the Docs で Automation Rules 設定（SemVerタグの自動アクティブ化）
-- [ ] Read the Docs でデフォルトバージョンを `stable` に変更
+- [x] `mjwarp/api.rst` の翻訳対応（シンボリックリンク + RTDビルド設定）
+- [x] ビルド確認（RTDビルド成功・APIページ表示確認済み）
+- [x] Read the Docs で Automation Rules 設定（SemVerタグの自動アクティブ化）
+- [x] Read the Docs でデフォルトバージョンを `stable` に変更
+- [x] README のバージョン情報を 3.5.0 に更新
+- [x] リリース前チェック（`CLAUDE.md`参照）
+- [x] `3.5.0` annotatedタグを打つ
 
 ## 対応履歴
 

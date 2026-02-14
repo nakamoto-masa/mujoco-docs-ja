@@ -7,8 +7,8 @@
 
 ## バージョン情報
 
-- 対応バージョン: MuJoCo 3.4.1 (開発版)
-- 基準コミット: [7418d86e](https://github.com/google-deepmind/mujoco/commit/7418d86e) (2026-01-30)
+- 対応バージョン: MuJoCo 3.5.0
+- 基準コミット: [881544c0](https://github.com/google-deepmind/mujoco/commit/881544c0)
 
 ## ライセンス
 

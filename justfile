@@ -8,6 +8,10 @@ ja:
 en:
     open https://mujoco.readthedocs.io/
 
+# Read the Docs 管理画面を開く
+rtd:
+    open https://app.readthedocs.org/projects/mujoco-docs-ja/
+
 # Sphinxドキュメントを通常ビルド
 [working-directory: 'docs']
 build:
