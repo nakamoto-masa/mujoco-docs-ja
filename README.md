@@ -2,7 +2,7 @@
 
 [MuJoCo](https://github.com/google-deepmind/mujoco)公式ドキュメントの日本語翻訳プロジェクトです。
 
-- **日本語版**: https://nakamoto-masa.github.io/mujoco-docs-ja/
+- **日本語版**: https://mujoco-docs-ja.readthedocs.io
 - **オリジナル**: https://mujoco.readthedocs.io
 
 ## バージョン情報
