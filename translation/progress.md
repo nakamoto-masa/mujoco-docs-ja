@@ -69,7 +69,7 @@
 | ファイル | 状態 | 変更点 |
 |---------|------|--------|
 | index.rst | ✅ | オプション更新、beta警告削除 |
-| api.rst | ⚠️ | 正式機能昇格に伴いAPI翻訳を検討 |
+| api.rst | 🈚 | シンボリックリンク（autodoc自動生成） |
 
 ### OpenUSD/
 
@@ -87,7 +87,7 @@
 - [x] 現在の状態に `3.4.1-dev` annotatedタグを打つ
 - [x] サブモジュールを 3.5.0 に更新
 - [x] 翻訳ファイルの差分反映（上記 ⚠️ のファイル）
-- [ ] `mjwarp/api.rst` の翻訳対応（`research/mujoco_warp_autodoc.md` 参照）
+- [x] `mjwarp/api.rst` の翻訳対応（`research/mujoco_warp_autodoc.md` 参照）
 - [ ] ビルド確認
 - [ ] `3.5.0` annotatedタグを打つ
 - [ ] Read the Docs で Automation Rules 設定（SemVerタグの自動アクティブ化）
