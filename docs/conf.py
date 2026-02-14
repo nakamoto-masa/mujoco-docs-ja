@@ -23,6 +23,7 @@ import sys
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
 sys.path.append(os.path.abspath('ext'))
+sys.path.insert(0, os.path.abspath('../original/mujoco/mjx/mujoco/mjx/third_party'))
 
 from sphinxcontrib import katex  # pylint: disable=g-import-not-at-top
 from sphinxcontrib import youtube  # pylint: disable=g-import-not-at-top,unused-import
