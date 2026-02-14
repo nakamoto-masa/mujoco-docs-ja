@@ -59,17 +59,20 @@ mujoco-docs-ja/
 │   ├── docutils.conf  # Docutils設定
 │   ├── Makefile       # ビルド用
 │   │
-│   ├── images/        # 画像
-│   ├── _static/       # Sphinx静的ファイル
-│   ├── templates/     # Sphinxテンプレート
-│   ├── includes/      # 再利用可能なスニペット
-│   ├── css/           # カスタムCSS
-│   └── js/            # カスタムJavaScript
+│   ├── images/ → original/mujoco/doc/images/        # シンボリックリンク
+│   ├── _static/ → original/mujoco/doc/_static/      # シンボリックリンク
+│   ├── templates/ → original/mujoco/doc/templates/  # シンボリックリンク
+│   ├── includes/ → original/mujoco/doc/includes/    # シンボリックリンク
+│   ├── css/ → original/mujoco/doc/css/              # シンボリックリンク
+│   ├── js/ → original/mujoco/doc/js/                # シンボリックリンク
+│   └── ext/ → original/mujoco/doc/ext/              # シンボリックリンク
 │
 ├── translation/       # 翻訳管理
-│   ├── progress.md    # 翻訳進捗管理
+│   ├── progress.md    # バージョン対応状況
 │   ├── glossary.md    # 用語集（統一表記）
-│   └── sphinx-config.md  # Sphinx設定とオリジナルとの差分
+│   ├── sphinx-config.md  # Sphinx設定とオリジナルとの差分
+│   ├── research/      # 調査記録
+│   └── logs/          # 過去の作業ログ
 │
 └── scripts/           # ユーティリティ
 ```
@@ -209,6 +212,38 @@ open _build/html/index.html
 ### 7. 進捗管理を更新
 
 `translation/progress.md` で翻訳状態を更新
+
+## バージョン更新ワークフロー（差分反映）
+
+新しいバージョンのMuJoCoがリリースされた際の翻訳更新手順。
+
+### 1. サブモジュールの差分を確認
+
+```bash
+cd original/mujoco
+git fetch
+git diff <現在のコミット>..<新バージョンタグ> --name-only -- doc/
+```
+
+### 2. 変更のあったファイルの差分を確認
+
+```bash
+cd original/mujoco
+git diff <現在のコミット>..<新バージョンタグ> -- doc/<filename>.rst
+```
+
+### 3. 翻訳ファイルに差分を反映
+
+オリジナルの差分を確認しながら、対応する翻訳ファイルに変更を反映する。
+翻訳ルールおよびインラインマークアップの注意点は新規翻訳と同様。
+
+### 4. 翻訳後のチェック・ビルド・確認
+
+新規翻訳ワークフローのステップ4〜6と同様。
+
+### 5. 進捗管理を更新
+
+`translation/progress.md` で対応状況を更新。
 
 ## Jupyter Notebookの翻訳
 
