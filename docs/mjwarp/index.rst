@@ -11,21 +11,10 @@ MuJoCo Warp (MJWarp)
 
 MuJoCo Warp (MJWarp) は `Warp <https://nvidia.github.io/warp/>`__ で実装されたMuJoCoで、
 `NVIDIA <https://nvidia.com>`__ ハードウェアと並列シミュレーションに最適化されています。MJWarpは
-`google-deepmind/mujoco_warp <https://github.com/google-deepmind/mujoco_warp>`__ GitHubリポジトリに存在し、現在ベータ版です。
+`google-deepmind/mujoco_warp <https://github.com/google-deepmind/mujoco_warp>`__ GitHubリポジトリに存在します。
 
 MJWarpは `NVIDIA <https://nvidia.com>`__ と
 `Google DeepMind <https://deepmind.google/>`__ の共同開発によって維持されています。
-
-.. TODO: remove after release
-
-.. admonition:: ベータ版ソフトウェア
-   :class: warning
-
-   - MJWarpはベータ版ソフトウェアであり、活発に開発中です。
-   - MJWarp開発者は
-     `バグレポートと機能リクエスト <https://github.com/google-deepmind/mujoco_warp/issues>`__ をトリアージして対応します。
-   - MJWarpはほぼ機能完成していますが、パフォーマンス最適化、ドキュメント、テストが必要です。
-   - ベータ期間中の対象ユーザーは物理エンジン愛好家と学習フレームワーク統合者です。
 
 .. _MJW_tutorial:
 
@@ -634,3 +623,45 @@ MuJoCoとの違い
 `wp.tile_cholesky <https://nvidia.github.io/warp/language_reference/_generated/warp._src.lang.tile_cholesky.html>`__ で計算され、
 結果は異なる逆モード ``L'DL`` ルーチン
 :ref:`mj_factorM` が使用されるため、MuJoCoの対応するフィールドと一致することは期待されていません。
+
+オプション
+----------
+
+:class:`mjw.Option <mujoco_warp.Option>` フィールドは :ref:`mjOption` の対応するフィールドと一致しますが、以下の例外があります：
+
+- :ref:`impratio <option-impratio>` はその逆平方根 ``impratio_invsqrt`` として格納されます。
+- 制約ソルバー設定の :ref:`tolerance <option-tolerance>` は最小値 ``1e-6`` にクランプされます。
+- 接触の :ref:`オーバーライド <option-flag-override>` パラメータ :ref:`o_margin <option-o_margin>` 、 :ref:`o_solref <option-o_solref>` 、 :ref:`o_solimp <option-o_solimp>` 、および :ref:`o_friction <option-o_friction>` は利用できません。
+
+:ref:`disableflags <option-flag>` には以下の違いがあります：
+
+- :ref:`mjDSBL_MIDPHASE <mjtDisablebit>` は利用できません。
+- :ref:`mjDSBL_AUTORESET <mjtDisablebit>` は利用できません。
+- :ref:`mjDSBL_NATIVECCD <mjtDisablebit>` はデフォルトのボックス-ボックスコライダーをCCDからプリミティブコライダーに変更します。
+- :ref:`mjDSBL_ISLAND <mjtDisablebit>` は現在利用できません。制約アイランドの発見はGitHubイシュー `#886 <https://github.com/google-deepmind/mujoco_warp/issues/886>`__ で追跡されています。
+
+:ref:`enableflags <option-flag>` には以下の違いがあります：
+
+- :ref:`mjENBL_OVERRIDE <mjtEnablebit>` は利用できません。
+- :ref:`mjENBL_FWDINV <mjtEnablebit>` は利用できません。
+- :ref:`mjENBL_ISLAND <mjtEnablebit>` による制約アイランドスリーピングは現在利用できません。この機能はGitHubイシュー `#886 <https://github.com/google-deepmind/mujoco_warp/issues/886>`__ と `#887 <https://github.com/google-deepmind/mujoco_warp/issues/887>`__ で追跡されています。
+
+MJWarp固有の追加オプションが利用可能です：
+
+- ``ls_parallel``: 制約ソルバーで並列直線探索を使用
+- ``ls_parallel_min_step``: 並列直線探索の最小ステップサイズ
+- ``broadphase``: ブロードフェーズアルゴリズムのタイプ（ :class:`mjw.BroadphaseType <mujoco_warp.BroadphaseType>` ）
+- ``broadphase_filter``: ブロードフェーズで使用されるフィルタリングのタイプ（ :class:`mjw.BroadphaseFilter <mujoco_warp.BroadphaseFilter>` ）
+- ``graph_conditional``: CUDAグラフ条件を使用
+- ``run_collision_detection``: 衝突検出ルーチンを使用
+- ``contact_sensor_maxmatch``: 接触センサーのマッチング基準の最大接触数
+
+.. admonition:: 流体モデル
+  :class: note
+
+  流体モデルパラメータ ``density`` 、 ``viscosity`` 、または ``wind`` を変更する場合、 ``Model.has_fluid`` の更新が必要な場合があります。
+
+.. admonition:: グラフキャプチャ
+  :class: note
+
+  更新された設定を有効にするために、 :class:`mjw.Option <mujoco_warp.Option>` フィールドの変更後に新しい :ref:`グラフキャプチャ <mjwGC>` が必要な場合があります。

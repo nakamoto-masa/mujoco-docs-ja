@@ -2589,7 +2589,7 @@ MJCFは、追加の属性を提供することで、代替のライティング�
 
 .. _body-flexcomp-dof:
 
-:at:`dof`: :at-val:`[full, radial, trilinear], "full"`
+:at:`dof`: :at-val:`[full, radial, trilinear, quadratic], "full"`
    フレックスの自由度（dofs）のパラメータ化です。右のビデオは、変形可能な球体を使用して異なるパラメータ化を示しています。ビデオの 3 つのモデルはそれぞれ
    `sphere_full <https://github.com/google-deepmind/mujoco/blob/main/model/flex/sphere_full.xml>`__ 、
    `sphere_radial <https://github.com/google-deepmind/mujoco/blob/main/model/flex/sphere_radial.xml>`__ 、
@@ -3851,6 +3851,33 @@ MuJoCo で使用される他のカスタムバイナリ形式と同様に、フ�
 :at:`group`: :at-val:`int, "0"`
    アクチュエータが所属する整数グループ。この属性はカスタムタグに使用できます。また、ビジュアライザーがアクチュエータのグループ全体のレンダリングを有効化/無効化するために使用されます。
 
+.. _actuator-general-nsample:
+
+:at:`nsample`: :at-val:`int, "0"`
+   0より大きい場合、この属性はこのアクチュエータの ``ctrl`` 履歴の :at:`nsample` サンプルを持つ時間インデックス付きリングバッファを作成します。状態の更新時に、現在の制御入力がタイムスタンプ ``time`` でバッファに追加され、最も古いサンプルが削除されます。履歴バッファ内の値は :ref:`mj_readCtrl` を介して読み取ることができます。
+
+   :ref:`delay<actuator-general-delay>` には正の :at-val:`nsample` が必要です。
+   詳細は :ref:`ディレイ<CDelay>` を参照してください。
+
+.. _actuator-general-interp:
+
+:at:`interp`: :at-val:`[zoh, linear, cubic], "zoh"`
+   履歴バッファからの読み取り時に使用される補間方法。 :ref:`mj_readCtrl` の ``interp`` 引数に対応します。
+
+   - ``zoh``: ゼロ次ホールド（区分的定数）。
+   - ``linear``: 区分的線形補間。
+   - ``cubic``: 3次スプライン補間（Catmull-Rom）。
+
+   :at:`interp` の値は高度なユースケース向けです。詳細は :ref:`ディレイ<CDelay>` を参照してください。
+
+.. _actuator-general-delay:
+
+:at:`delay`: :at-val:`real, "0"`
+   0より大きい場合、順動力学の計算中にアクチュエータへの制御入力は ``mjData.ctrl`` から読み取られる代わりに、 :ref:`mj_readCtrl` を使用して履歴バッファから読み取られます。
+   履歴バッファ（ :ref:`nsample<actuator-general-nsample>` > 0）が必要です。
+
+   最も一般的なケースでは、 ``delay = nsample * timestep`` です。
+
 .. _actuator-general-ctrllimited:
 
 :at:`ctrllimited`: :at-val:`[false, true, auto], "auto"`
@@ -4042,6 +4069,12 @@ biastype  none    biasprm   0 0 0
 
 .. _actuator-motor-group:
 
+.. _actuator-motor-delay:
+
+.. _actuator-motor-nsample:
+
+.. _actuator-motor-interp:
+
 .. _actuator-motor-ctrllimited:
 
 .. _actuator-motor-forcelimited:
@@ -4074,7 +4107,7 @@ biastype  none    biasprm   0 0 0
 
 
 .. |actuator/motor attrib list| replace::
-   :at:`name`, :at:`class`, :at:`group`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
+   :at:`name`, :at:`class`, :at:`group`, :at:`delay`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
    :at:`lengthrange`, :at:`gear`, :at:`cranklength`, :at:`joint`, :at:`jointinparent`, :at:`tendon`, :at:`cranksite`,
    :at:`slidersite`, :at:`site`, :at:`refsite`, :at:`user`
 
@@ -4105,6 +4138,12 @@ biastype  affine              biasprm   0 -kp -kv
 .. _actuator-position-class:
 
 .. _actuator-position-group:
+
+.. _actuator-position-delay:
+
+.. _actuator-position-nsample:
+
+.. _actuator-position-interp:
 
 .. _actuator-position-ctrllimited:
 
@@ -4137,7 +4176,7 @@ biastype  affine              biasprm   0 -kp -kv
 .. _actuator-position-user:
 
 .. |actuator/position attrib list| replace::
-   :at:`name`, :at:`class`, :at:`group`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
+   :at:`name`, :at:`class`, :at:`group`, :at:`delay`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
    :at:`lengthrange`, :at:`gear`, :at:`cranklength`, :at:`joint`, :at:`jointinparent`, :at:`tendon`, :at:`cranksite`,
    :at:`slidersite`, :at:`site`, :at:`refsite`, :at:`user`
 
@@ -4202,6 +4241,12 @@ biastype  affine  biasprm   0 0 -kv
 
 .. _actuator-velocity-group:
 
+.. _actuator-velocity-delay:
+
+.. _actuator-velocity-nsample:
+
+.. _actuator-velocity-interp:
+
 .. _actuator-velocity-ctrllimited:
 
 .. _actuator-velocity-forcelimited:
@@ -4233,7 +4278,7 @@ biastype  affine  biasprm   0 0 -kv
 .. _actuator-velocity-user:
 
 .. |actuator/velocity attrib list| replace::
-   :at:`name`, :at:`class`, :at:`group`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
+   :at:`name`, :at:`class`, :at:`group`, :at:`delay`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
    :at:`lengthrange`, :at:`gear`, :at:`cranklength`, :at:`joint`, :at:`jointinparent`, :at:`tendon`, :at:`cranksite`,
    :at:`slidersite`, :at:`site`, :at:`refsite`, :at:`user`
 
@@ -4270,6 +4315,12 @@ actlimited   true
 
 .. _actuator-intvelocity-group:
 
+.. _actuator-intvelocity-delay:
+
+.. _actuator-intvelocity-nsample:
+
+.. _actuator-intvelocity-interp:
+
 .. _actuator-intvelocity-ctrllimited:
 
 .. _actuator-intvelocity-forcelimited:
@@ -4303,7 +4354,7 @@ actlimited   true
 .. _actuator-intvelocity-user:
 
 .. |actuator/intvelocity attrib list| replace::
-   :at:`name`, :at:`class`, :at:`group`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
+   :at:`name`, :at:`class`, :at:`group`, :at:`delay`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
    :at:`actrange`, :at:`lengthrange`, :at:`gear`, :at:`cranklength`, :at:`joint`, :at:`jointinparent`, :at:`tendon`,
    :at:`cranksite`, :at:`slidersite`, :at:`site`, :at:`refsite`, :at:`user`
 
@@ -4358,6 +4409,12 @@ ctrllimited true
 
 .. _actuator-damper-group:
 
+.. _actuator-damper-delay:
+
+.. _actuator-damper-nsample:
+
+.. _actuator-damper-interp:
+
 .. _actuator-damper-ctrllimited:
 
 .. _actuator-damper-forcelimited:
@@ -4388,7 +4445,7 @@ ctrllimited true
 
 .. _actuator-damper-user:
 
-.. |actuator/damper attrib list| replace:: :at:`name`, :at:`class`, :at:`group`, :at:`ctrllimited`, :at:`forcelimited`,
+.. |actuator/damper attrib list| replace:: :at:`name`, :at:`class`, :at:`group`, :at:`delay`, :at:`ctrllimited`, :at:`forcelimited`,
    :at:`ctrlrange`, :at:`forcerange`, :at:`lengthrange`, :at:`gear`, :at:`cranklength`, :at:`joint`,
    :at:`jointinparent`, :at:`tendon`, :at:`cranksite`, :at:`slidersite`, :at:`site`, :at:`refsite`, :at:`user`
 
@@ -4425,6 +4482,12 @@ biastype  affine  biasprm   bias(3)
 
 .. _actuator-cylinder-group:
 
+.. _actuator-cylinder-delay:
+
+.. _actuator-cylinder-nsample:
+
+.. _actuator-cylinder-interp:
+
 .. _actuator-cylinder-ctrllimited:
 
 .. _actuator-cylinder-forcelimited:
@@ -4456,7 +4519,7 @@ biastype  affine  biasprm   bias(3)
 .. _actuator-cylinder-user:
 
 .. |actuator/cylinder attrib list| replace::
-   :at:`name`, :at:`class`, :at:`group`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
+   :at:`name`, :at:`class`, :at:`group`, :at:`delay`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
    :at:`lengthrange`, :at:`gear`, :at:`cranklength`, :at:`joint`, :at:`jointinparent`, :at:`tendon`, :at:`cranksite`,
    :at:`slidersite`, :at:`site`, :at:`refsite`, :at:`user`
 
@@ -4508,6 +4571,12 @@ biastype  muscle  biasprm   gainprmと同じ
 
 .. _actuator-muscle-group:
 
+.. _actuator-muscle-delay:
+
+.. _actuator-muscle-nsample:
+
+.. _actuator-muscle-interp:
+
 .. _actuator-muscle-ctrllimited:
 
 .. _actuator-muscle-forcelimited:
@@ -4536,7 +4605,7 @@ biastype  muscle  biasprm   gainprmと同じ
 
 
 .. |actuator/muscle attrib list| replace::
-   :at:`name`, :at:`class`, :at:`group`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
+   :at:`name`, :at:`class`, :at:`group`, :at:`delay`, :at:`ctrllimited`, :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`,
    :at:`lengthrange`, :at:`gear`, :at:`cranklength`, :at:`joint`, :at:`jointinparent`, :at:`tendon`, :at:`cranksite`,
    :at:`slidersite`, :at:`user`
 
@@ -4623,6 +4692,12 @@ trntype     body    ctrllimited true
 
 .. _actuator-adhesion-group:
 
+.. _actuator-adhesion-delay:
+
+.. _actuator-adhesion-nsample:
+
+.. _actuator-adhesion-interp:
+
 .. _actuator-adhesion-forcelimited:
 
 .. _actuator-adhesion-ctrlrange:
@@ -4631,7 +4706,7 @@ trntype     body    ctrllimited true
 
 .. _actuator-adhesion-user:
 
-.. |actuator/adhesion attrib list| replace:: :at:`name`, :at:`class`, :at:`group`,
+.. |actuator/adhesion attrib list| replace:: :at:`name`, :at:`class`, :at:`group`, :at:`delay`,
    :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`, :at:`user`
 
 |actuator/adhesion attrib list|
@@ -4682,6 +4757,12 @@ trntype     body    ctrllimited true
 
 .. _actuator-plugin-group:
 
+.. _actuator-plugin-delay:
+
+.. _actuator-plugin-nsample:
+
+.. _actuator-plugin-interp:
+
 .. _actuator-plugin-actlimited:
 
 .. _actuator-plugin-ctrllimited:
@@ -4718,7 +4799,7 @@ trntype     body    ctrllimited true
 
 .. _actuator-plugin-actearly:
 
-.. |actuator/plugin attrib list| replace:: :at:`name`, :at:`class`, :at:`group`, :at:`actlimited`, :at:`ctrllimited`,
+.. |actuator/plugin attrib list| replace:: :at:`name`, :at:`class`, :at:`group`, :at:`delay`, :at:`actlimited`, :at:`ctrllimited`,
    :at:`forcelimited`, :at:`ctrlrange`, :at:`forcerange`, :at:`lengthrange`, :at:`gear`, :at:`cranklength`,
    :at:`joint`, :at:`jointinparent`, :at:`site`, :at:`tendon`, :at:`cranksite`, :at:`slidersite`, :at:`user`,
    :at:`actdim`, :at:`dynprm`, :at:`actearly`
@@ -4750,9 +4831,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-touch-cutoff:
 
+.. _sensor-touch-nsample:
+
+.. _sensor-touch-interp:
+
+.. _sensor-touch-interval:
+
+.. _sensor-touch-delay:
+
 .. _sensor-touch-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-touch-site:
@@ -4776,9 +4865,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-accelerometer-cutoff:
 
+.. _sensor-accelerometer-nsample:
+
+.. _sensor-accelerometer-interp:
+
+.. _sensor-accelerometer-interval:
+
+.. _sensor-accelerometer-delay:
+
 .. _sensor-accelerometer-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-accelerometer-site:
@@ -4800,9 +4897,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-velocimeter-cutoff:
 
+.. _sensor-velocimeter-nsample:
+
+.. _sensor-velocimeter-interp:
+
+.. _sensor-velocimeter-interval:
+
+.. _sensor-velocimeter-delay:
+
 .. _sensor-velocimeter-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-velocimeter-site:
@@ -4824,9 +4929,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-gyro-cutoff:
 
+.. _sensor-gyro-nsample:
+
+.. _sensor-gyro-interp:
+
+.. _sensor-gyro-interval:
+
+.. _sensor-gyro-delay:
+
 .. _sensor-gyro-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-gyro-site:
@@ -4850,9 +4963,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-force-cutoff:
 
+.. _sensor-force-nsample:
+
+.. _sensor-force-interp:
+
+.. _sensor-force-interval:
+
+.. _sensor-force-delay:
+
 .. _sensor-force-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-force-site:
@@ -4876,9 +4997,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-torque-cutoff:
 
+.. _sensor-torque-nsample:
+
+.. _sensor-torque-interp:
+
+.. _sensor-torque-interval:
+
+.. _sensor-torque-delay:
+
 .. _sensor-torque-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-torque-site:
@@ -4900,9 +5029,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-magnetometer-cutoff:
 
+.. _sensor-magnetometer-nsample:
+
+.. _sensor-magnetometer-interp:
+
+.. _sensor-magnetometer-interval:
+
+.. _sensor-magnetometer-delay:
+
 .. _sensor-magnetometer-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-magnetometer-site:
@@ -4947,9 +5084,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-rangefinder-cutoff:
 
+.. _sensor-rangefinder-nsample:
+
+.. _sensor-rangefinder-interp:
+
+.. _sensor-rangefinder-interval:
+
+.. _sensor-rangefinder-delay:
+
 .. _sensor-rangefinder-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-rangefinder-site:
@@ -4985,9 +5130,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-camprojection-cutoff:
 
+.. _sensor-camprojection-nsample:
+
+.. _sensor-camprojection-interp:
+
+.. _sensor-camprojection-interval:
+
+.. _sensor-camprojection-delay:
+
 .. _sensor-camprojection-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-jointpos:
@@ -5003,9 +5156,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-jointpos-cutoff:
 
+.. _sensor-jointpos-nsample:
+
+.. _sensor-jointpos-interp:
+
+.. _sensor-jointpos-interval:
+
+.. _sensor-jointpos-delay:
+
 .. _sensor-jointpos-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-jointpos-joint:
@@ -5027,9 +5188,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-jointvel-cutoff:
 
+.. _sensor-jointvel-nsample:
+
+.. _sensor-jointvel-interp:
+
+.. _sensor-jointvel-interval:
+
+.. _sensor-jointvel-delay:
+
 .. _sensor-jointvel-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-jointvel-joint:
@@ -5051,9 +5220,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-tendonpos-cutoff:
 
+.. _sensor-tendonpos-nsample:
+
+.. _sensor-tendonpos-interp:
+
+.. _sensor-tendonpos-interval:
+
+.. _sensor-tendonpos-delay:
+
 .. _sensor-tendonpos-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-tendonpos-tendon:
@@ -5075,9 +5252,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-tendonvel-cutoff:
 
+.. _sensor-tendonvel-nsample:
+
+.. _sensor-tendonvel-interp:
+
+.. _sensor-tendonvel-interval:
+
+.. _sensor-tendonvel-delay:
+
 .. _sensor-tendonvel-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-tendonvel-tendon:
@@ -5099,9 +5284,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-actuatorpos-cutoff:
 
+.. _sensor-actuatorpos-nsample:
+
+.. _sensor-actuatorpos-interp:
+
+.. _sensor-actuatorpos-interval:
+
+.. _sensor-actuatorpos-delay:
+
 .. _sensor-actuatorpos-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-actuatorpos-actuator:
@@ -5123,9 +5316,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-actuatorvel-cutoff:
 
+.. _sensor-actuatorvel-nsample:
+
+.. _sensor-actuatorvel-interp:
+
+.. _sensor-actuatorvel-interval:
+
+.. _sensor-actuatorvel-delay:
+
 .. _sensor-actuatorvel-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-actuatorvel-actuator:
@@ -5147,9 +5348,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-actuatorfrc-cutoff:
 
+.. _sensor-actuatorfrc-nsample:
+
+.. _sensor-actuatorfrc-interp:
+
+.. _sensor-actuatorfrc-interval:
+
+.. _sensor-actuatorfrc-delay:
+
 .. _sensor-actuatorfrc-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-actuatorfrc-actuator:
@@ -5172,9 +5381,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-jointactuatorfrc-cutoff:
 
+.. _sensor-jointactuatorfrc-nsample:
+
+.. _sensor-jointactuatorfrc-interp:
+
+.. _sensor-jointactuatorfrc-interval:
+
+.. _sensor-jointactuatorfrc-delay:
+
 .. _sensor-jointactuatorfrc-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-jointactuatorfrc-joint:
@@ -5197,9 +5414,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-tendonactuatorfrc-cutoff:
 
+.. _sensor-tendonactuatorfrc-nsample:
+
+.. _sensor-tendonactuatorfrc-interp:
+
+.. _sensor-tendonactuatorfrc-interval:
+
+.. _sensor-tendonactuatorfrc-delay:
+
 .. _sensor-tendonactuatorfrc-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-tendonactuatorfrc-tendon:
@@ -5221,9 +5446,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-ballquat-cutoff:
 
+.. _sensor-ballquat-nsample:
+
+.. _sensor-ballquat-interp:
+
+.. _sensor-ballquat-interval:
+
+.. _sensor-ballquat-delay:
+
 .. _sensor-ballquat-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-ballquat-joint:
@@ -5245,9 +5478,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-ballangvel-cutoff:
 
+.. _sensor-ballangvel-nsample:
+
+.. _sensor-ballangvel-interp:
+
+.. _sensor-ballangvel-interval:
+
+.. _sensor-ballangvel-delay:
+
 .. _sensor-ballangvel-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-ballangvel-joint:
@@ -5269,9 +5510,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-jointlimitpos-cutoff:
 
+.. _sensor-jointlimitpos-nsample:
+
+.. _sensor-jointlimitpos-interp:
+
+.. _sensor-jointlimitpos-interval:
+
+.. _sensor-jointlimitpos-delay:
+
 .. _sensor-jointlimitpos-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-jointlimitpos-joint:
@@ -5293,9 +5542,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-jointlimitvel-cutoff:
 
+.. _sensor-jointlimitvel-nsample:
+
+.. _sensor-jointlimitvel-interp:
+
+.. _sensor-jointlimitvel-interval:
+
+.. _sensor-jointlimitvel-delay:
+
 .. _sensor-jointlimitvel-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-jointlimitvel-joint:
@@ -5317,9 +5574,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-jointlimitfrc-cutoff:
 
+.. _sensor-jointlimitfrc-nsample:
+
+.. _sensor-jointlimitfrc-interp:
+
+.. _sensor-jointlimitfrc-interval:
+
+.. _sensor-jointlimitfrc-delay:
+
 .. _sensor-jointlimitfrc-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-jointlimitfrc-joint:
@@ -5341,9 +5606,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-tendonlimitpos-cutoff:
 
+.. _sensor-tendonlimitpos-nsample:
+
+.. _sensor-tendonlimitpos-interp:
+
+.. _sensor-tendonlimitpos-interval:
+
+.. _sensor-tendonlimitpos-delay:
+
 .. _sensor-tendonlimitpos-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-tendonlimitpos-tendon:
@@ -5365,9 +5638,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-tendonlimitvel-cutoff:
 
+.. _sensor-tendonlimitvel-nsample:
+
+.. _sensor-tendonlimitvel-interp:
+
+.. _sensor-tendonlimitvel-interval:
+
+.. _sensor-tendonlimitvel-delay:
+
 .. _sensor-tendonlimitvel-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-tendonlimitvel-tendon:
@@ -5389,9 +5670,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-tendonlimitfrc-cutoff:
 
+.. _sensor-tendonlimitfrc-nsample:
+
+.. _sensor-tendonlimitfrc-interp:
+
+.. _sensor-tendonlimitfrc-interval:
+
+.. _sensor-tendonlimitfrc-delay:
+
 .. _sensor-tendonlimitfrc-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照してください。
 
 .. _sensor-tendonlimitfrc-tendon:
@@ -5413,9 +5702,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-framepos-cutoff:
 
+.. _sensor-framepos-nsample:
+
+.. _sensor-framepos-interp:
+
+.. _sensor-framepos-interval:
+
+.. _sensor-framepos-delay:
+
 .. _sensor-framepos-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-framepos-objtype:
@@ -5452,9 +5749,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-framequat-cutoff:
 
+.. _sensor-framequat-nsample:
+
+.. _sensor-framequat-interp:
+
+.. _sensor-framequat-interval:
+
+.. _sensor-framequat-delay:
+
 .. _sensor-framequat-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-framequat-objtype:
@@ -5491,9 +5796,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-framexaxis-cutoff:
 
+.. _sensor-framexaxis-nsample:
+
+.. _sensor-framexaxis-interp:
+
+.. _sensor-framexaxis-interval:
+
+.. _sensor-framexaxis-delay:
+
 .. _sensor-framexaxis-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-framexaxis-objtype:
@@ -5530,9 +5843,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-frameyaxis-cutoff:
 
+.. _sensor-frameyaxis-nsample:
+
+.. _sensor-frameyaxis-interp:
+
+.. _sensor-frameyaxis-interval:
+
+.. _sensor-frameyaxis-delay:
+
 .. _sensor-frameyaxis-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-frameyaxis-objtype:
@@ -5569,9 +5890,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-framezaxis-cutoff:
 
+.. _sensor-framezaxis-nsample:
+
+.. _sensor-framezaxis-interp:
+
+.. _sensor-framezaxis-interval:
+
+.. _sensor-framezaxis-delay:
+
 .. _sensor-framezaxis-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-framezaxis-objtype:
@@ -5608,9 +5937,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-framelinvel-cutoff:
 
+.. _sensor-framelinvel-nsample:
+
+.. _sensor-framelinvel-interp:
+
+.. _sensor-framelinvel-interval:
+
+.. _sensor-framelinvel-delay:
+
 .. _sensor-framelinvel-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-framelinvel-objtype:
@@ -5647,9 +5984,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-frameangvel-cutoff:
 
+.. _sensor-frameangvel-nsample:
+
+.. _sensor-frameangvel-interp:
+
+.. _sensor-frameangvel-interval:
+
+.. _sensor-frameangvel-delay:
+
 .. _sensor-frameangvel-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-frameangvel-objtype:
@@ -5688,9 +6033,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-framelinacc-cutoff:
 
+.. _sensor-framelinacc-nsample:
+
+.. _sensor-framelinacc-interp:
+
+.. _sensor-framelinacc-interval:
+
+.. _sensor-framelinacc-delay:
+
 .. _sensor-framelinacc-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-framelinacc-objtype:
@@ -5719,9 +6072,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-frameangacc-cutoff:
 
+.. _sensor-frameangacc-nsample:
+
+.. _sensor-frameangacc-interp:
+
+.. _sensor-frameangacc-interval:
+
+.. _sensor-frameangacc-delay:
+
 .. _sensor-frameangacc-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-frameangacc-objtype:
@@ -5748,9 +6109,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-subtreecom-cutoff:
 
+.. _sensor-subtreecom-nsample:
+
+.. _sensor-subtreecom-interp:
+
+.. _sensor-subtreecom-interval:
+
+.. _sensor-subtreecom-delay:
+
 .. _sensor-subtreecom-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-subtreecom-body:
@@ -5774,9 +6143,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-subtreelinvel-cutoff:
 
+.. _sensor-subtreelinvel-nsample:
+
+.. _sensor-subtreelinvel-interp:
+
+.. _sensor-subtreelinvel-interval:
+
+.. _sensor-subtreelinvel-delay:
+
 .. _sensor-subtreelinvel-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-subtreelinvel-body:
@@ -5800,9 +6177,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-subtreeangmom-cutoff:
 
+.. _sensor-subtreeangmom-nsample:
+
+.. _sensor-subtreeangmom-interp:
+
+.. _sensor-subtreeangmom-interval:
+
+.. _sensor-subtreeangmom-delay:
+
 .. _sensor-subtreeangmom-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-subtreeangmom-body:
@@ -5825,9 +6210,17 @@ trntype     body    ctrllimited true
 
 .. _sensor-insidesite-cutoff:
 
+.. _sensor-insidesite-nsample:
+
+.. _sensor-insidesite-interp:
+
+.. _sensor-insidesite-interval:
+
+.. _sensor-insidesite-delay:
+
 .. _sensor-insidesite-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 .. _sensor-insidesite-objtype:
@@ -5911,9 +6304,17 @@ sequential sensors
 
 .. _sensor-distance-noise:
 
+.. _sensor-distance-nsample:
+
+.. _sensor-distance-interp:
+
+.. _sensor-distance-interval:
+
+.. _sensor-distance-delay:
+
 .. _sensor-distance-user:
 
-:at:`name`, :at:`noise`, :at:`user`:
+:at:`name`, :at:`noise`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`:
    :ref:`CSensor` を参照。
 
 
@@ -5955,9 +6356,17 @@ sequential sensors
 
 .. _sensor-normal-noise:
 
+.. _sensor-normal-nsample:
+
+.. _sensor-normal-interp:
+
+.. _sensor-normal-interval:
+
+.. _sensor-normal-delay:
+
 .. _sensor-normal-user:
 
-:at:`name`, :at:`noise`, :at:`user`:
+:at:`name`, :at:`noise`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`:
    :ref:`CSensor` を参照。
 
 
@@ -6001,9 +6410,17 @@ sequential sensors
 
 .. _sensor-fromto-noise:
 
+.. _sensor-fromto-nsample:
+
+.. _sensor-fromto-interp:
+
+.. _sensor-fromto-interval:
+
+.. _sensor-fromto-delay:
+
 .. _sensor-fromto-user:
 
-:at:`name`, :at:`noise`, :at:`user`:
+:at:`name`, :at:`noise`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`:
    :ref:`CSensor` を参照。
 
 
@@ -6104,11 +6521,19 @@ Extraction
 
 .. _sensor-contact-name:
 
+.. _sensor-contact-nsample:
+
+.. _sensor-contact-interp:
+
+.. _sensor-contact-interval:
+
+.. _sensor-contact-delay:
+
 .. _sensor-contact-user:
 
 .. _sensor-contact-noise:
 
-:at:`name`, :at:`noise`, :at:`user`:
+:at:`name`, :at:`noise`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`:
    :ref:`CSensor` を参照。
 
 .. _sensor-tactile:
@@ -6134,9 +6559,17 @@ Extraction
 
 .. _sensor-tactile-name:
 
+.. _sensor-tactile-nsample:
+
+.. _sensor-tactile-interp:
+
+.. _sensor-tactile-interval:
+
+.. _sensor-tactile-delay:
+
 .. _sensor-tactile-user:
 
-:at:`name`, :at:`user`:
+:at:`name`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`:
    :ref:`CSensor` を参照。
 
 .. _sensor-e_potential:
@@ -6152,9 +6585,17 @@ Extraction
 
 .. _sensor-e_potential-cutoff:
 
+.. _sensor-e_potential-nsample:
+
+.. _sensor-e_potential-interp:
+
+.. _sensor-e_potential-interval:
+
+.. _sensor-e_potential-delay:
+
 .. _sensor-e_potential-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 
@@ -6171,9 +6612,17 @@ Extraction
 
 .. _sensor-e_kinetic-cutoff:
 
+.. _sensor-e_kinetic-nsample:
+
+.. _sensor-e_kinetic-interp:
+
+.. _sensor-e_kinetic-interval:
+
+.. _sensor-e_kinetic-delay:
+
 .. _sensor-e_kinetic-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 
@@ -6190,9 +6639,17 @@ Extraction
 
 .. _sensor-clock-cutoff:
 
+.. _sensor-clock-nsample:
+
+.. _sensor-clock-interp:
+
+.. _sensor-clock-interval:
+
+.. _sensor-clock-delay:
+
 .. _sensor-clock-user:
 
-:at:`name`, :at:`noise`, :at:`cutoff`, :at:`user`
+:at:`name`, :at:`noise`, :at:`cutoff`, :at:`nsample`, :at:`interval`, :at:`delay`, :at:`user`
    :ref:`CSensor` を参照。
 
 
@@ -7189,6 +7646,12 @@ mjVisualのすべての設定はグローバルですが、ここでの設定は
 
 .. _default-general-group:
 
+.. _default-general-delay:
+
+.. _default-general-nsample:
+
+.. _default-general-interp:
+
 .. _default-general-actdim:
 
 .. _default-general-dyntype:
@@ -7230,6 +7693,12 @@ mjVisualのすべての設定はグローバルですが、ここでの設定は
 
 .. _default-motor-group:
 
+.. _default-motor-delay:
+
+.. _default-motor-nsample:
+
+.. _default-motor-interp:
+
 :el-prefix:`default/` |-| **motor** |?|
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -7255,6 +7724,12 @@ mjVisualのすべての設定はグローバルですが、ここでの設定は
 .. _default-position-user:
 
 .. _default-position-group:
+
+.. _default-position-delay:
+
+.. _default-position-nsample:
+
+.. _default-position-interp:
 
 .. _default-position-kp:
 
@@ -7288,6 +7763,12 @@ name、class、joint、jointinparent、site、refsite、tendon、slidersite、cr
 
 .. _default-velocity-group:
 
+.. _default-velocity-delay:
+
+.. _default-velocity-nsample:
+
+.. _default-velocity-interp:
+
 .. _default-velocity-kv:
 
 :el-prefix:`default/` |-| **velocity** |?|
@@ -7318,6 +7799,12 @@ name、class、joint、jointinparent、site、refsite、tendon、slidersite、cr
 
 .. _default-intvelocity-group:
 
+.. _default-intvelocity-delay:
+
+.. _default-intvelocity-nsample:
+
+.. _default-intvelocity-interp:
+
 .. _default-intvelocity-kp:
 
 .. _default-intvelocity-kv:
@@ -7346,6 +7833,12 @@ name、class、joint、jointinparent、site、refsite、tendon、slidersite、cr
 
 .. _default-damper-group:
 
+.. _default-damper-delay:
+
+.. _default-damper-nsample:
+
+.. _default-damper-interp:
+
 .. _default-damper-kv:
 
 :el-prefix:`default/` |-| **damper** |?|
@@ -7371,6 +7864,12 @@ name、class、joint、jointinparent、site、refsite、tendon、slidersite、cr
 .. _default-cylinder-user:
 
 .. _default-cylinder-group:
+
+.. _default-cylinder-delay:
+
+.. _default-cylinder-nsample:
+
+.. _default-cylinder-interp:
 
 .. _default-cylinder-timeconst:
 
@@ -7403,6 +7902,12 @@ name、class、joint、jointinparent、site、refsite、tendon、slidersite、cr
 .. _default-muscle-user:
 
 .. _default-muscle-group:
+
+.. _default-muscle-delay:
+
+.. _default-muscle-nsample:
+
+.. _default-muscle-interp:
 
 .. _default-muscle-timeconst:
 
@@ -7441,6 +7946,12 @@ name、class、joint、jointinparent、site、refsite、tendon、slidersite、cr
 .. _default-adhesion-user:
 
 .. _default-adhesion-group:
+
+.. _default-adhesion-delay:
+
+.. _default-adhesion-nsample:
+
+.. _default-adhesion-interp:
 
 :el-prefix:`default/` |-| **adhesion** |?|
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

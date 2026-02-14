@@ -21,12 +21,12 @@ Unityバージョン2020.2以降では、Package Managerがネイティブライ
 MacOS
 _____
 
-MuJoCoアプリを少なくとも1回は実行して、ライブラリを信頼されたバイナリとして登録する必要があります。その後、ダイナミックライブラリファイルを ``/Applications/MuJoCo.app/Contents/Frameworks/mujoco.framework/Versions/Current/libmujoco.3.4.1.dylib`` からコピーし（ ``MuJoCo.app`` の内容を参照することで見つけることができます）、 ``mujoco.dylib`` としてリネームします。
+MuJoCoアプリを少なくとも1回は実行して、ライブラリを信頼されたバイナリとして登録する必要があります。その後、ダイナミックライブラリファイルを ``/Applications/MuJoCo.app/Contents/Frameworks/mujoco.framework/Versions/Current/libmujoco.3.5.0.dylib`` からコピーし（ ``MuJoCo.app`` の内容を参照することで見つけることができます）、 ``mujoco.dylib`` としてリネームします。
 
 Linux
 _____
 
-``tar.gz`` アーカイブを ``~/.mujoco`` に展開します。次に、ダイナミックライブラリを ``~/.mujoco/mujoco-3.4.1/lib/libmujoco.so.3.4.1`` からコピーし、 ``libmujoco.so`` としてリネームします。
+``tar.gz`` アーカイブを ``~/.mujoco`` に展開します。次に、ダイナミックライブラリを ``~/.mujoco/mujoco-3.5.0/lib/libmujoco.so.3.5.0`` からコピーし、 ``libmujoco.so`` としてリネームします。
 
 Windows
 _______

@@ -289,6 +289,76 @@ skipstage = :ref:`mjSTAGE_POS<mjtStage>` でダイナミクスを呼び出すこ
 
 srcからdstに状態をコピーします。
 
+.. _mj_readCtrl:
+
+`mj_readCtrl <#mj_readCtrl>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mujoco-include:: mj_readCtrl
+
+指定された時刻でのアクチュエータの制御値を、ディレイを考慮して読み取ります。履歴バッファが存在しない場合は ``mjData.ctrl[id]`` を返します。履歴バッファが存在する場合（ :ref:`nsample<actuator-general-nsample>` > 0）、要求された補間次数を使用して ``time - actuator_delay[id]`` の時点でディレイバッファから読み取ります。
+
+- ``interp = 0``: ゼロ次ホールド（区分的定数）
+- ``interp = 1``: 区分的線形
+- ``interp = 2``: 3次スプライン（Catmull-Rom）
+- ``interp = -1``: アクチュエータの :ref:`interp<actuator-general-interp>` 値を使用
+
+バッファ範囲外では定数外挿が使用されます。
+
+ディレイの減算により、 ``time`` 引数のセマンティクスが「値がディレイバッファにプッシュされた時刻」から「値がディレイバッファから出てくる時刻」に変わることに注意してください。詳細は :ref:`ディレイ<CDelay>` を参照してください。
+
+.. _mj_readSensor:
+
+`mj_readSensor <#mj_readSensor>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mujoco-include:: mj_readSensor
+
+指定された時刻でのセンサー値を、ディレイを考慮して読み取ります。履歴バッファが存在しない場合は、 ``mjData.sensordata`` のセンサーのスライスへのポインタを返します。履歴バッファが存在する場合（ :ref:`nsample<sensor-nsample>` > 0）、 ``time - sensor_delay[id]`` の時点で履歴バッファから読み取ります。ディレイの減算により、 ``time`` 引数のセマンティクスが「値がディレイバッファにプッシュされた時刻」から「値がディレイバッファから出てくる時刻」に変わることに注意してください。詳細は :ref:`ディレイ<CDelay>` を参照してください。
+
+**戻り値のセマンティクス:**
+
+- 履歴バッファが存在しない場合（ :ref:`nsample<sensor-nsample>` = 0）、 ``mjData.sensordata`` のセンサーのスライスへのポインタを返します。
+- 履歴バッファが存在し（ :ref:`nsample<sensor-nsample>` > 0）、要求された時刻が格納されたサンプルと一致する場合（ ``interp = 0`` では常にtrue）、履歴バッファ内のデータへのポインタを返します。
+- 補間が必要な場合（ ``interp = 1 or 2`` ）、 ``NULL`` を返し、補間された結果を ``result`` （サイズ ``dim`` である必要があります）に書き込みます。
+
+**補間:**
+
+- ``interp = 0``: ゼロ次ホールド（区分的定数）
+- ``interp = 1``: 区分的線形
+- ``interp = 2``: 3次スプライン（Catmull-Rom）
+- ``interp = -1``: :ref:`interp<sensor-interp>` の値を使用
+
+バッファ範囲外では定数外挿が使用されます。
+
+
+**使用例:**
+
+.. code-block:: C
+
+   // 時刻tでデータサイズ`dim`のセンサー0を読み取り
+   mjtNum result[dim];
+   const mjtNum* ptr = mj_readSensor(m, d, 0, t, result, /* interp = */ 1);
+   const mjtNum* data = ptr ? ptr : result;
+
+.. _mj_initCtrlHistory:
+
+`mj_initCtrlHistory <#mj_initCtrlHistory>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mujoco-include:: mj_initCtrlHistory
+
+カスタム値でアクチュエータの履歴バッファを初期化します。 ``times`` 配列は各サンプルのタイムスタンプを指定し（長さ :ref:`nsample<actuator-general-nsample>` である必要があります）、 ``values`` は制御値を指定します。 ``times`` が ``NULL`` の場合、バッファ内の既存のタイムスタンプが使用され、値のみが更新されます。詳細は :ref:`ディレイ<CDelay>` を参照してください。
+
+.. _mj_initSensorHistory:
+
+`mj_initSensorHistory <#mj_initSensorHistory>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mujoco-include:: mj_initSensorHistory
+
+カスタム値でセンサーの履歴バッファを初期化します。 ``times`` 配列は各サンプルのタイムスタンプを指定し（長さ :ref:`nsample<sensor-nsample>` である必要があります）、 ``values`` はセンサー値を指定します（サイズ ``nsample * dim`` である必要があります）。 ``times`` が ``NULL`` の場合、バッファ内の既存のタイムスタンプが使用されます。 ``phase`` 引数はユーザースロットを設定し、インターバルセンサーの最後の計算時刻を格納します。詳細は :ref:`ディレイ<CDelay>` を参照してください。
+
 .. _mj_setKeyframe:
 
 `mj_setKeyframe <#mj_setKeyframe>`__
@@ -1399,6 +1469,75 @@ VFSからすべてのファイルを削除し、VFSの内部メモリを割り�
 .. mujoco-include:: mj_clearCache
 
 アセットキャッシュをクリアする。
+
+.. _Resources:
+
+リソース
+^^^^^^^^
+
+リソースは :ref:`リソースプロバイダ <exProvider>` とMuJoCoモデルコンパイルコード間のインターフェースです。これらの関数はリソースプロバイダに問い合わせてリソースを取得する手段を提供します。
+
+.. _mju_openResource:
+
+`mju_openResource <#mju_openResource>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mujoco-include:: mju_openResource
+
+リソースを開きます。名前に登録済みのリソースプロバイダに一致するプレフィックスがない場合、OSファイルシステムが使用されます。
+
+*Nullable:* ``dir`` 、 ``vfs`` 、 ``error``
+
+.. _mju_closeResource:
+
+`mju_closeResource <#mju_closeResource>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mujoco-include:: mju_closeResource
+
+リソースを閉じます。リソースがNULLの場合は何もしません。
+
+.. _mju_readResource:
+
+`mju_readResource <#mju_readResource>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mujoco-include:: mju_readResource
+
+バッファをリソースから読み取ったバイトに設定し、バッファ内のバイト数を返します。エラーの場合は負の値を返します。
+
+.. _mju_getResourceDir:
+
+`mju_getResourceDir <#mju_getResourceDir>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mujoco-include:: mju_getResourceDir
+
+名前が {dir}{filename} として分割されるリソースについて、dirおよびndirポインタを取得します。
+
+.. _mju_isModifiedResource:
+
+`mju_isModifiedResource <#mju_isModifiedResource>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mujoco-include:: mju_isModifiedResource
+
+リソースのタイムスタンプを提供されたタイムスタンプと比較します。
+
+タイムスタンプが一致する場合は0を、リソースが新しい場合は0より大きい値を、リソースが古い場合は0より小さい値を返します。
+
+.. _mju_decodeResource:
+
+`mju_decodeResource <#mju_decodeResource>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mujoco-include:: mju_decodeResource
+
+リソースのデコーダを見つけ、デコードされたspecを返します。
+
+呼び出し元がspecの所有権を取得し、クリーンアップの責任を負います。
+
+*Nullable:* ``vfs``
 
 .. _Initialization:
 

@@ -2,74 +2,100 @@
 変更履歴
 =========
 
-次期バージョン（未リリース）
------------------------------------
+Version 3.5.0 (February 12, 2026)
+---------------------------------
 
-.. admonition:: Breaking API changes
-   :class: attention
+主要な新機能
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-   - レイキャスト関数がオプションでレイ交差点における表面法線を計算するようになりました。これは ``mjtNum normal[3]`` 引数の追加による破壊的変更です。変更された関数は :ref:`mj_ray` 、 :ref:`mj_multiRay` 、 :ref:`mju_rayGeom` 、 :ref:`mj_rayFlex` 、 :ref:`mj_rayHfield` および :ref:`mj_rayMesh` です。
+1. :doc:`MuJoCo Warp <mjwarp/index>` が正式にリリースされました。
+2. 新しい **システム同定** ツールボックス（Python）が追加されました。詳細は `README <https://github.com/google-deepmind/mujoco/blob/main/python/mujoco/sysid/README.md>`__ を参照してください。
+   |br| ツールボックスのデモColabノートブックはこちらから利用できます: |sysid_colab|
+   |br| :github:user:`kevinzakka` 、 :github:user:`aftersomemath` 、 :github:user:`jonathanembleyriches` 、 :github:user:`qiayuanl` 、 :github:user:`spjardim` および :github:user:`gizemozd` による貢献。
 
-     **移行方法:** C/C++では、 ``normal`` 引数に ``NULL`` を渡してください。Pythonでは、 :ref:`mj_multiRay` を除くすべての関数でデフォルト値が ``None`` であるため、対応は不要です。
+.. |sysid_colab| image:: https://colab.research.google.com/assets/colab-badge.png
+                 :target: https://colab.research.google.com/github/google-deepmind/mujoco/blob/main/python/mujoco/sysid/sysid.ipynb
 
-   - ``mju_rayFlex`` は、 ``mjModel*`` および ``mjData*`` 引数を取る他の関数との一貫性のために :ref:`mj_rayFlex` に名前が変更されました。
 
-   - ``mjModel.cam_orthographic`` フィールドは ``cam_projection`` に名前が変更され、新しい列挙型 :ref:`mjtProjection` のセマンティクスを持つようになりました。これにより、将来的に魚眼カメラなどのより多くの投影タイプが可能になります。関連して、カメラの ``camera/orthographic`` MJCF属性は :ref:`camera/projection<body-camera-projection>` に名前が変更され、 ``orthographic`` と ``perspective`` の値を受け付けるようになりました。
-
-     **移行方法:** ``orthographic = "false/true"`` をそれぞれ ``projection="perspective/orthographic"`` に置き換えてください。
-
-   - ``mjpResourceProvider`` 構造体から ``getdir`` が削除されました。すべてのリソースプロバイダは同じ共有実装を使用するようになりました。
-
-全般
-^^^^^^^
+3. アクチュエータとセンサーが履歴バッファを介した任意のディレイをサポートするようになり、センサー値をシミュレーションのタイムステップより大きなインターバルで計算できるようになりました。ディレイまたはインターバルを使用すると、新しい ``mjData.history`` 変数が :ref:`物理状態<siPhysicsState>` に追加されます。詳細は :ref:`ディレイ<CDelay>` を参照してください。
 
 .. image:: images/changelog/poncho.png
    :width: 45%
    :align: right
    :target: https://github.com/google-deepmind/mujoco/blob/main/model/flex/poncho.xml
 
-- よりコースなメッシュでの布シミュレーションを可能にする新しい :ref:`flexvert<equality-flexvert>` 等式制約が追加されました。これにより、flexcomp エッジの :ref:`equality<flexcomp-edge-equality>` に新しいオプション ``vert`` と、新しい等式制約タイプ :ref:`flexvert<equality-flexvert>` が追加されます。
+4. よりコースなメッシュでの布シミュレーションを可能にする新しい :ref:`flexvert<equality-flexvert>` 等式制約が追加されました。これにより、flexcomp エッジの :ref:`equality<flexcomp-edge-equality>` に新しい属性値 ``vert`` と、新しい等式制約タイプ :ref:`flexvert<equality-flexvert>` が追加されます。 `Chen, Kry and Vouga, 2019 <https://arxiv.org/abs/1911.05204>`__ で説明されている手法を使用しています。
+5. ``implicit`` および ``implicitfast`` :ref:`積分器<geIntegration>` における変形可能オブジェクト（flex）の陰的積分サポートが追加されました。この手法はflexの自由度を抽出し、密なブロックとして解くことで、タイムステップを減少させることなく剛性の高いflexオブジェクトの安定性を向上させます。 ``trilinear`` および ``quadratic`` :ref:`dof<body-flexcomp-dof>` タイプと互換性があります。
 
 .. image:: images/XMLreference/rfcamera.png
    :width: 45%
    :align: right
    :target: https://github.com/google-deepmind/mujoco/blob/main/test/engine/testdata/sensor/rfcamera.xml
 
-- カメラの錐台の可視化は、 :ref:`resolution<body-camera-resolution>` を1より大きい値に設定することでトリガーされるようになりました。関連して、錐台の可視化は :ref:`正射影<body-camera-projection>` カメラでも機能します。
-- 測距計センサーを :ref:`rangefinder/camera<sensor-rangefinder-camera>` 属性を使用してカメラにアタッチできるようになりました。この場合、センサーは各ピクセルに対して1本ずつ、複数のレイをキャストします。
-- 測距計センサーが、レイ距離以外にも表面法線を含むさまざまな種類の情報を報告できるようになりました。詳細は :ref:`rangefinder<sensor-rangefinder>` を参照してください。
-- カメラに :ref:`output<body-camera-output>` 属性が追加され、 ``mjModel.cam_output`` ビットフィールドに解析されます。レンダラーでは使用されませんが、カメラがサポートする出力タイプを格納する便利な場所として機能します。
-- カスタムVFSプロバイダをマウントするための :ref:`mj_mountVFS` および :ref:`mj_unmountVFS` 関数が追加されました。マウントにより、プロバイダを使用して任意のパスでリソースを動的にオープン/読み取り/クローズできます。
-- 同一の属性を持つ連続した :ref:`衝突センサー<collision-sensors>` が計算を共有する最適化が削除されました。これにより、この最適化を利用していたモデルでは（おそらく軽微な）パフォーマンスの低下が生じます。パフォーマンスを回復するには、 :ref:`fromto<sensor-fromto>` を使用して他の値を手動で計算してください。 ``from = fromto[0:3]`` および ``to = fromto[3:6]`` とすると、 ``distance = norm(to-from)`` および ``normal = normalize(to-from)`` となります。
-- 非破壊的なABI変更:
+6. 測距計センサーを :ref:`rangefinder/camera<sensor-rangefinder-camera>` 属性を使用してカメラにアタッチできるようになりました。この場合、センサーは :ref:`camera/resolution<body-camera-resolution>` 属性を尊重し、各ピクセルに対して1本ずつ、複数のレイをキャストします。
+7. :ref:`測距計<sensor-rangefinder>` が、レイ距離以外にも表面法線や交差点を含むさまざまな種類の情報を報告できるようになりました。
 
-  - :ref:`mj_stateSize` および関連関数の ``sig`` （シグネチャ）引数の型が ``unsigned int`` から ``int`` に変更されました。この変更以前は、この関数に渡される無効な負の引数は暗黙のキャストにより無視されていましたが、現在は負の値でエラーがトリガーされます。
-  - :ref:`depth<mjtRndFlag>` レンダリングフラグが追加されました。
-  - :ref:`mjModel` の割り当てサイズが、より大きなシーンに対応するために32ビット整数から64ビット整数を使用するようになりました。
+.. container:: custom-clear
 
-- :doc:`OpenUSD <OpenUSD/index>`:
+   .. raw:: html
 
-  - パーシングが実験的な段階から mjpDecoder プラグインに移行されました。（ドキュメントは準備中）
-  - OpenUSDを `third_party_deps/openusd <https://github.com/google-deepmind/mujoco/tree/main/cmake/third_party_deps/openusd>`__ CMakeユーティリティプロジェクトでビルドできるようになりました。
-  - ``USD_DIR`` はMuJoCo CMakeプロジェクトで使用されなくなりました。ビルド済みのUSDライブラリがある場合は代わりに ``pxr_DIR`` を使用してください。
-  - ユーザーは ``PXR_PLUGINPATH_NAME`` 環境変数を設定する必要がなくなりました。MuJoCoはUSDプラグインを自動的に読み込みます。
+      <div style="clear: both;"></div>
+
+全般
+^^^^^^^
+
+.. admonition:: 破壊的API変更
+   :class: attention
+
+   8. レイキャスト関数がオプションでレイ交差点における表面法線を計算するようになりました。これは ``mjtNum normal[3]`` 引数の追加による破壊的変更です。変更された関数は :ref:`mj_ray` 、 :ref:`mj_multiRay` 、 :ref:`mju_rayGeom` 、 :ref:`mj_rayFlex` 、 :ref:`mj_rayHfield` および :ref:`mj_rayMesh` です。
+
+      **移行方法:** C/C++では、 ``normal`` 引数に ``NULL`` を渡してください。Pythonでは、 :ref:`mj_multiRay` を除くすべての関数でデフォルト値が ``None`` であるため、対応は不要です。
+
+   9. ``mju_rayFlex`` は、 ``mjModel*`` および ``mjData*`` 引数を取る他の関数との一貫性のために :ref:`mj_rayFlex` に名前が変更されました。
+
+   10. ``mjModel.cam_orthographic`` フィールドは ``cam_projection`` に名前が変更され、新しい列挙型 :ref:`mjtProjection` のセマンティクスを持つようになりました。これにより、将来的に魚眼カメラなどのより多くの投影タイプが可能になります。関連して、カメラの ``camera/orthographic`` MJCF属性は :ref:`camera/projection<body-camera-projection>` に名前が変更され、 ``orthographic`` と ``perspective`` の値を受け付けるようになりました。
+
+       **移行方法:** ``orthographic = "false/true"`` をそれぞれ ``projection="perspective/orthographic"`` に置き換えてください。
+
+   11. ``mjpResourceProvider`` 構造体から ``getdir`` が削除されました。すべてのリソースプロバイダは同じ共有実装を使用するようになりました。
+   12. 2つのジオムの ``margin`` または ``gap`` :ref:`パラメータ<CContact>` を組み合わせて接触のパラメータを取得する際、それぞれの値が最大値を取る代わりに **合計** されるようになりました。これにより、ジオムのマージンがジオムの適切な「膨張」となります。
+
+13. カメラの錐台の可視化は、 :ref:`resolution<body-camera-resolution>` を1より大きい値に設定することでトリガーされるようになりました。関連して、錐台の可視化は :ref:`正射影<body-camera-projection>` カメラでも機能します。詳細は :ref:`rangefinder<sensor-rangefinder>` を参照してください。
+14. カメラに :ref:`output<body-camera-output>` 属性が追加され、 ``mjModel.cam_output`` ビットフィールドに解析されます。レンダラーでは使用されませんが、カメラがサポートする出力タイプを格納する便利な場所として機能します。
+15. カスタムVFSプロバイダをマウントするための :ref:`mj_mountVFS` および :ref:`mj_unmountVFS` 関数が追加されました。マウントにより、プロバイダを使用して任意のパスでリソースを動的にオープン/読み取り/クローズできます。
+16. 同一の属性を持つ連続した :ref:`衝突センサー<collision-sensors>` が計算を共有する最適化が削除されました。これにより、この最適化を利用していたモデルでは（おそらく軽微な）パフォーマンスの低下が生じます。パフォーマンスを回復するには、 :ref:`fromto<sensor-fromto>` を使用して他の値を手動で計算してください。 ``from = fromto[0:3]`` および ``to = fromto[3:6]`` とすると、 ``distance = norm(to-from)`` および ``normal = normalize(to-from)`` となります。
+17. :doc:`OpenUSD <OpenUSD/index>`:
+
+    - パーシングが実験的な段階から mjpDecoder プラグインに移行されました。（ドキュメントは準備中）
+    - OpenUSDを `third_party_deps/openusd <https://github.com/google-deepmind/mujoco/tree/main/cmake/third_party_deps/openusd>`__ CMakeユーティリティプロジェクトでビルドできるようになりました。
+    - ``USD_DIR`` はMuJoCo CMakeプロジェクトで使用されなくなりました。ビルド済みのUSDライブラリがある場合は代わりに ``pxr_DIR`` を使用してください。
+    - ユーザーは ``PXR_PLUGINPATH_NAME`` 環境変数を設定する必要がなくなりました。MuJoCoはUSDプラグインを自動的に読み込みます。
+18. 非破壊的なABI変更:
+
+    - :ref:`mj_stateSize` および関連関数の ``sig`` （シグネチャ）引数の型が ``unsigned int`` から ``int`` に変更されました。この変更以前は、この関数に渡される無効な負の引数は暗黙のキャストにより無視されていましたが、現在は負の値でエラーがトリガーされます。
+    - :ref:`depth<mjtRndFlag>` レンダリングフラグが追加されました。
+    - :ref:`mjModel` の割り当てサイズが、より大きなシーンに対応するために32ビット整数から64ビット整数を使用するようになりました。
 
 
 MJX
 ^^^
-- ``mjx.Data`` に ``actuator_length`` 、 ``cdof`` および ``cdof_dof`` フィールドが追加されました。
-
+19. ``mjx.Data`` に ``actuator_length`` 、 ``cdof`` および ``cdof_dof`` フィールドが追加されました。
+20. 複数のWarpグラフキャプチャモードをサポートする ``graph_mode`` 引数が ``put_model`` に追加されました。
 
 ドキュメント
 ^^^^^^^^^^^^^
-- :ref:`プログラミング/シミュレーション<Simulation>` の章が全般的に改善されました。特に、 :ref:`状態<siStateControl>` に関する主要な議論がこの章に移動され、 :ref:`mjModelの変更<siChange>` に関するセクションが拡充されました。
-- :ref:`MJCFスキーマ<CSchema>` の使いやすさが、要素と属性へのリンクを含む折りたたみ可能なドロップダウンメニューにより改善されました。
+21. :ref:`プログラミング/シミュレーション<Simulation>` の章が全般的に改善されました。特に、 :ref:`状態<siStateControl>` に関する主要な議論がこの章に移動され、 :ref:`mjModelの変更<siChange>` に関するセクションが拡充されました。
+22. :ref:`MJCFスキーマ<CSchema>` の使いやすさが、要素と属性へのリンクを含む折りたたみ可能なドロップダウンメニューにより改善されました。
+23. MuJoCoのバージョン番号付けがセマンティックバージョニングに基づくようになりました。 `VERSIONING.md <https://github.com/google-deepmind/mujoco/blob/main/VERSIONING.md>`__ を参照してください。
 
 
 バグ修正
 ^^^^^^^^^
-- :ref:`usethread<compiler-usethread>` コンパイラフラグ（デフォルトでオン）によって有効化されるマルチスレッドメッシュ処理が、実際にはこのフラグによって無効化されていました。このバグの修正により、メッシュを多用するモデルのコンパイルが利用可能なコア数に応じて（最大で）高速化されます。
-- :ref:`mj_rayFlex` および :ref:`mju_raySkin` の ``vertid`` 引数はnull許容としてマークされていましたが、実際にはそうではありませんでした。現在はnull許容になりました。
+24. :ref:`陰的積分器<geIntegrators>` の導関数で、力が :ref:`forcerange<actuator-general-forcerange>` によってクランプされた場合にアクチュエータ速度導関数が誤って計算されるバグを修正しました。
+25. :ref:`陰的積分器<geIntegrators>` の導関数で、アクチュエータ速度導関数が :ref:`actearly<actuator-general-actearly>` フラグを考慮していなかったバグを修正しました。
+26. :ref:`usethread<compiler-usethread>` コンパイラフラグ（デフォルトでオン）によって有効化されるマルチスレッドメッシュ処理が、実際にはこのフラグによって無効化されていました。このバグの修正により、メッシュを多用するモデルのコンパイルが利用可能なコア数に応じて（最大で）高速化されます。
+27. :ref:`mj_rayFlex` および :ref:`mju_raySkin` の ``vertid`` 引数はnull許容としてマークされていましたが、実際にはそうではありませんでした。現在はnull許容になりました。
+28. ジョイントを持たないボディがジョイントを持つ親ボディ内にネストされている場合に :ref:`gravcomp<body-gravcomp>` が無視されるバグを修正しました（ :issue:`3066` 、 :github:user:`Alex108306` による報告）。
 
 Version 3.4.0 (December 5, 2025)
 --------------------------------

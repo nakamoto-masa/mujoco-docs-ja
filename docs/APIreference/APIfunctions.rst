@@ -28,6 +28,7 @@ API 関数は以下のように分類できます。
    - 各種数量の :ref:`出力<Printing>` 。
    - メモリからアセットを読み込むために使用される :ref:`仮想ファイルシステム<Virtualfilesystem>` 。
    - モデルのコンパイルを高速化するために使用される :ref:`アセットキャッシュ<Assetcache>` 。
+   - アセットを読み込むためにリソースプロバイダとインターフェースする :ref:`リソース<Resources>` 。
    - データ構造の :ref:`初期化<Initialization>` 。
    - :ref:`エラーとメモリ<Errorandmemory>` 。
    - :ref:`その他<Miscellaneous>` の関数。

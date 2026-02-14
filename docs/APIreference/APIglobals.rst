@@ -422,9 +422,8 @@ mjRNDSTRING
      - 15
      - UI 矩形の最大数。 `mjui.h <https://github.com/google-deepmind/mujoco/blob/main/include/mujoco/mjui.h>`_ で定義されています。
    * - ``mjVERSION_HEADER``
-     - 341
-     - MuJoCo ヘッダーのバージョン。リリースごとに変更されます。これはソフトウェアバージョンの 100 倍に等しい整数であるため、210 はバージョン 2.1 に対応します。mujoco.h で定義されています。API 関数 :ref:`mj_version` は同じ意味の数値を返しますが、コンパイルされたライブラリに対してです。
-
+     - 3005000
+     - MuJoCo ヘッダーのバージョン。これはバージョン文字列 "S.M.P" から式 ``(S * 1e6) + (M * 1e3) + P`` を使用して計算される整数です。たとえば、バージョン 4.2.1 は 4002001 として表されます。mujoco.h で定義されています。API 関数 :ref:`mj_version` は同じ意味の数値を返しますが、コンパイルされたライブラリに対してです。詳細は `VERSIONING.md <https://github.com/google-deepmind/mujoco/blob/main/VERSIONING.md>`__ を参照してください。
 
 .. _Macros:
 

@@ -203,7 +203,7 @@ MuJoCoは、設定、リセット、時間経過とともに進めることが�
 
 物理状態
 """"""""
-*物理状態* (:ref:`mjSTATE_PHYSICS<mjtState>`) には、ステッピング中に時間積分される主要な量が含まれています。これらは ``mjData.{qpos, qvel, act}`` です。
+*物理状態* (:ref:`mjSTATE_PHYSICS<mjtState>`) には、ステッピング中に時間積分される主要な量が含まれています。これらは ``mjData.{qpos, qvel, act, history}`` です。
 
 位置：``qpos``
   一般化座標での構成、:ref:`数値積分<geIntegration>` セクションでは :math:`q` と表記されます。
@@ -213,6 +213,9 @@ MuJoCoは、設定、リセット、時間経過とともに進めることが�
 
 アクチュエータ活性化：``act``
   2次機械システムの場合、状態には位置と速度のみが含まれますが、MuJoCoは独自の活性化状態を持つステートフルアクチュエータ（生物学的筋肉など）もモデル化し、``mjData.act`` に組み立てられます。これは :ref:`数値積分<geIntegration>` セクションでは :math:`w` と表記されます。
+
+履歴バッファ：``history``
+  アクチュエータまたはセンサーが正の :at:`nsample` 属性（ :ref:`アクチュエータ<actuator-general-nsample>` 、 :ref:`センサー<sensor-nsample>` ）を持つ場合、このバッファは以前の制御値またはセンサー値のタイムスタンプ付きサンプルを格納します。詳細は :ref:`ディレイ<CDelay>` を参照してください。
 
 .. _siFullPhysics:
 
