@@ -24,6 +24,7 @@ dependencies = [
     # see https://github.com/aws/aws-sam-cli/issues/3661 regarding markupsafe
     "markupsafe==2.0.1",
     "mujoco-mjx>=3.5.0",
+    "sphinx-sitemap>=2.9.0",
 ]
 
 [dependency-groups]

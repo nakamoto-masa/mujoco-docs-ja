@@ -35,6 +35,11 @@ copyright = 'DeepMind Technologies Limited'  # pylint: disable=redefined-builtin
 author = 'Google DeepMind'
 language = 'ja'
 
+# -- SEO configuration -------------------------------------------------------
+
+html_baseurl = 'https://mujoco-docs-ja.readthedocs.io/ja/latest/'
+sitemap_url_scheme = '{link}'
+
 # -- General configuration ---------------------------------------------------
 
 master_doc = 'index'
@@ -57,6 +62,7 @@ extensions = [
     'sphinx_toolbox.collapse',
     'sphinx_toolbox.github',
     'sphinx_toolbox.sidebar_links',
+    'sphinx_sitemap',
     'mujoco_include',
 ]
 
